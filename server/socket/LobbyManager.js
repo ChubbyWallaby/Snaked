@@ -4,7 +4,7 @@ import { GameRoom } from './GameRoom.js'
 import { updateUser, addTransaction, getUser } from '../db/index.js'
 
 const MAX_PLAYERS = 50
-const LOBBY_TIMER_SECONDS = 60
+const LOBBY_TIMER_SECONDS = 5
 const GAME_FEE = parseFloat(process.env.GAME_FEE) || 0.5
 
 const PENDING_FEE_KEY = 'pendingFees'
