@@ -94,7 +94,11 @@ function Game() {
     }
 
     const connectToServer = useCallback(() => {
-        const socket = io(window.location.origin, {
+        // Use Env Var -> Hardcoded Fallback (Prod) -> Relative (Dev)
+        const socketUrl = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://snaked.onrender.com' : window.location.origin)
+
+        console.log('🔌 Connecting to Socket:', socketUrl)
+        const socket = io(socketUrl, {
             auth: { token: localStorage.getItem('token') }
         })
 
