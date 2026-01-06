@@ -15,16 +15,38 @@ dotenv.config()
 
 const app = express()
 const server = createServer(app)
+const allowedOrigins = [
+    process.env.CLIENT_URL || 'http://localhost:5173',
+    'https://snaked.pages.dev' // Always allow main domain
+]
+
 const io = new Server(server, {
     cors: {
-        origin: process.env.CLIENT_URL || 'http://localhost:5173',
+        origin: (origin, callback) => {
+            // Allow requests with no origin (like mobile apps or curl requests)
+            if (!origin) return callback(null, true)
+
+            // Allow allowed origins and any Cloudflare preview URLs (*.pages.dev)
+            if (allowedOrigins.indexOf(origin) !== -1 || origin.endsWith('.pages.dev')) {
+                callback(null, true)
+            } else {
+                callback(new Error('Not allowed by CORS'))
+            }
+        },
         methods: ['GET', 'POST']
     }
 })
 
 // Middleware
 app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true)
+        if (allowedOrigins.indexOf(origin) !== -1 || origin.endsWith('.pages.dev')) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    },
     credentials: true
 }))
 app.use(express.json())
