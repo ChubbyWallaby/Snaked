@@ -5,6 +5,7 @@ const FOOD_RADIUS = 8
 const SEGMENT_RADIUS = 12
 const GAME_FEE = parseFloat(process.env.GAME_FEE) || 0.5
 const INITIAL_SNAKE_LENGTH = 10
+const MAX_SPEED = 15 // Normal is ~5, boost is ~10. Allow buffer.
 
 // Game colors
 const SNAKE_COLORS = [
@@ -18,10 +19,12 @@ export class GameRoom {
         this.io = io
         this.players = new Map() // Map<socketId, player>
         this.food = []
+        this.foodChanged = true // Optimized broadcast flag
         this.moneyOrbs = []
         this.lastUpdate = Date.now()
         this.intervalId = null
         this.active = false
+        this.cleanupTimeouts = new Set()
 
         this.initFood()
     }
@@ -41,6 +44,7 @@ export class GameRoom {
             y: Math.random() * (WORLD_SIZE - 100) + 50,
             color: SNAKE_COLORS[Math.floor(Math.random() * SNAKE_COLORS.length)]
         })
+        this.foodChanged = true
     }
 
     isSpawnCollision(x, y) {
@@ -92,7 +96,8 @@ export class GameRoom {
             colorIndex,
             money: GAME_FEE, // Initial value = Entry Fee
             alive: true,
-            joinedAt: Date.now()
+            joinedAt: Date.now(),
+            lastMoveTime: Date.now()
         }
     }
 
@@ -131,14 +136,38 @@ export class GameRoom {
         const player = this.players.get(socketId)
         if (!player || !player.alive) return
 
+        const now = Date.now()
+        // Simple speed validation
+        // We trust the client's segments (for now, to keep movement smooth on their end)
+        // BUT we check if the head moved too far since last update
+
+        if (data.segments && data.segments.length > 0) {
+            const oldHead = player.segments[0]
+            const newHead = data.segments[0]
+
+            // Calculate distance moved
+            const dx = newHead.x - oldHead.x
+            const dy = newHead.y - oldHead.y
+            const distance = Math.sqrt(dx * dx + dy * dy)
+
+            player.lastMoveTime = now
+
+            // If they moved way too far in one tick (e.g. teleport hack)
+            // Allow some buffer for lag spikes where multiple moves arrive at once
+            if (distance > MAX_SPEED * 5) {
+                // Suspicious! 
+                // For now, just ignore the update to prevent snapping
+                // In a stricter version, we'd disconnect them
+                // console.warn(`Suspicious movement from ${player.username}: ${distance.toFixed(2)}px`)
+                return
+            }
+
+            player.segments = data.segments
+        }
+
         // Update direction
         if (data.direction) {
             player.direction = data.direction
-        }
-
-        // Update segments (trust client sync for now)
-        if (data.segments && data.segments.length > 0) {
-            player.segments = data.segments
         }
 
         // Check Collisions and Collection
@@ -150,11 +179,15 @@ export class GameRoom {
             this.handlePlayerDeath(player, killerId)
         } else {
             // Broadcast move
-            this.io.to(this.roomId).emit('playerMoved', {
-                id: socketId,
-                segments: player.segments.slice(0, 20), // Bandwidth optimization
-                direction: player.direction
-            })
+            // Optimization: Don't rebroadcast every single move immediately if we are ticking at 100ms anyway
+            // The gameloop will pick up the new state. 
+            // However, for smooth opponent movement, we might want to emit key events.
+            // But relying on the tick loop is more bandwidth efficient.
+            // The original code emitted 'playerMoved' here. Let's keep it but maybe throttle?
+            // Actually, let's REMOVE immediate broadcast and rely on the Game Loop tick (10Hz)
+            // This massively reduces bandwidth.
+
+            // this.io.to(this.roomId).emit('playerMoved', ...)
         }
     }
 
@@ -173,9 +206,11 @@ export class GameRoom {
         })
 
         // Remove player from Map after brief delay (allows death animation)
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
             this.players.delete(player.id)
+            this.cleanupTimeouts.delete(timeout)
         }, 2000)
+        this.cleanupTimeouts.add(timeout)
     }
 
     pointInCircle(px, py, cx, cy, radius) {
@@ -223,6 +258,10 @@ export class GameRoom {
             }
             return true
         })
+
+        if (this.food.length < FOOD_COUNT) {
+            this.foodChanged = true
+        }
 
         // Respawn food
         collected.forEach(() => this.spawnFood())
@@ -290,20 +329,27 @@ export class GameRoom {
                     playersObject[id] = {
                         id: player.id,
                         username: player.username,
-                        segments: player.segments,
+                        segments: player.segments, // Could limit this further if needed
                         color: player.color,
-                        alive: player.alive // Include for client-side safety check
+                        alive: player.alive
                     }
                 }
             }
 
-            this.io.to(this.roomId).emit('gameState', {
+            const update = {
                 players: playersObject,
-                food: this.food,
                 moneyOrbs: this.moneyOrbs,
                 leaderboard: this.getLeaderboard(),
                 playerCount: this.players.size
-            })
+            }
+
+            // Only send food if it changed
+            if (this.foodChanged) {
+                update.food = this.food
+                this.foodChanged = false
+            }
+
+            this.io.to(this.roomId).emit('gameState', update)
         }, 100)
     }
 
@@ -312,5 +358,10 @@ export class GameRoom {
         if (this.intervalId) {
             clearInterval(this.intervalId)
         }
+        // clean up any pending timeouts
+        for (const timeout of this.cleanupTimeouts) {
+            clearTimeout(timeout)
+        }
+        this.cleanupTimeouts.clear()
     }
 }

@@ -7,6 +7,8 @@ const MAX_PLAYERS = 50
 const LOBBY_TIMER_SECONDS = 60
 const GAME_FEE = parseFloat(process.env.GAME_FEE) || 0.5
 
+const PENDING_FEE_KEY = 'pendingFees'
+
 export class LobbyManager {
     constructor(io) {
         this.io = io
@@ -64,8 +66,9 @@ export class LobbyManager {
                 // Cleanup empty rooms? 
                 // For now, let games run until everyone dies or leaves
                 if (room.players.size === 0) {
-                    // Could implement auto-close logic here
-                    // But for now, let's keep it simple
+                    room.stop()
+                    this.activeGames.delete(roomId)
+                    console.log(`Room ${roomId} cleaned up`)
                 }
             }
         }
@@ -73,15 +76,30 @@ export class LobbyManager {
 
     // --- Lobby Logic ---
 
-    addPlayerToLobby(socket, user) {
+    async addPlayerToLobby(socket, user) {
         // Prevent double join
         if (this.waitingPlayers.has(socket.id) || this.socketRoomMap.has(socket.id)) {
             return
         }
 
-        console.log(`Player ${user.username} joined lobby`)
+        // Check Balance accounting for pending fees
+        const freshUser = await getUser(user.id)
+        if (!freshUser) return
 
-        this.waitingPlayers.set(socket.id, { socket, user })
+        const pending = freshUser[PENDING_FEE_KEY] || 0
+        if (freshUser.balance - pending < GAME_FEE) {
+            socket.emit('error', { message: 'Insufficient balance (funds may be reserved in another lobby)' })
+            return
+        }
+
+        // Reserve funds
+        await updateUser(user.id, {
+            [PENDING_FEE_KEY]: pending + GAME_FEE
+        })
+
+        console.log(`Player ${user.username} joined lobby (Reserved $${GAME_FEE})`)
+
+        this.waitingPlayers.set(socket.id, { socket, user: freshUser })
         socket.join('lobby')
 
         // Start timer if first player
@@ -97,13 +115,24 @@ export class LobbyManager {
         }
     }
 
-    removePlayerFromLobby(socketId) {
+    async removePlayerFromLobby(socketId) {
         if (this.waitingPlayers.has(socketId)) {
             const { socket, user } = this.waitingPlayers.get(socketId)
+
+            // Release reserved funds
+            const freshUser = await getUser(user.id)
+            if (freshUser) {
+                const pending = freshUser[PENDING_FEE_KEY] || 0
+                await updateUser(user.id, {
+                    [PENDING_FEE_KEY]: Math.max(0, pending - GAME_FEE)
+                })
+                console.log(`Released reservation of $${GAME_FEE} for ${user.username}`)
+            }
+
             socket.leave('lobby')
             this.waitingPlayers.delete(socketId)
 
-            console.log(`Player ${user.username} left lobby (no fee charged yet)`)
+            console.log(`Player ${user.username} left lobby`)
 
             // Stop timer if empty or only 1 player
             if (this.waitingPlayers.size === 0) {
@@ -161,13 +190,23 @@ export class LobbyManager {
             const user = await getUser(userId)
             if (!user) return false
 
-            if (user.balance < GAME_FEE) {
-                console.log(`User ${userId} has insufficient balance for game`)
+            // We already checked balance at entry, but double check
+            // Also we need to clear the pending fee and deduct real balance
+
+            const pending = user[PENDING_FEE_KEY] || 0
+            const newPending = Math.max(0, pending - GAME_FEE)
+            const newBalance = user.balance - GAME_FEE
+
+            if (newBalance < 0) {
+                // Should not happen if reservation worked, unless race condition or bug
+                console.error(`CRITICAL: User ${userId} negative balance after fee deduction!`)
                 return false
             }
 
-            const newBalance = user.balance - GAME_FEE
-            await updateUser(userId, { balance: newBalance })
+            await updateUser(userId, {
+                balance: newBalance,
+                [PENDING_FEE_KEY]: newPending
+            })
 
             await addTransaction({
                 id: uuidv4(),
@@ -199,7 +238,11 @@ export class LobbyManager {
         // Deduct fees and move players from Lobby to Game
         const playersToAdd = []
 
-        for (const [socketId, { socket, user }] of this.waitingPlayers) {
+        // Create a snapshot of waiting players to iterate
+        // Use Array.from to avoid issues if map changes (though it shouldn't here)
+        const lobbyPlayers = Array.from(this.waitingPlayers.entries())
+
+        for (const [socketId, { socket, user }] of lobbyPlayers) {
             // Deduct fee now that game is actually starting
             const success = await this.deductFee(user.id)
 
@@ -209,12 +252,16 @@ export class LobbyManager {
                 // Kick player who can't pay (rare edge case)
                 socket.emit('error', { message: 'Insufficient balance to start game' })
                 socket.leave('lobby')
+
+                // Also ensure we remove them from waitingPlayers so they don't get stuck
+                // (Though we clear the map below anyway)
             }
         }
 
         // If everyone failed to pay somehow, abort
         if (playersToAdd.length === 0) {
             console.log('No players could pay - game aborted')
+            this.waitingPlayers.clear()
             return
         }
 

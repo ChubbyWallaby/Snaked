@@ -7,6 +7,10 @@ export const getStripe = () => {
 
     if (!stripe && key && !key.includes('placeholder')) {
         try {
+            if (process.env.NODE_ENV === 'production' && !process.env.STRIPE_WEBHOOK_SECRET) {
+                console.warn('⚠️ WARNING: STRIPE_WEBHOOK_SECRET is missing in production environment!')
+            }
+
             stripe = new Stripe(key, {
                 apiVersion: '2023-10-16'
             })

@@ -8,10 +8,16 @@ const USERS_FILE = path.join(DATA_DIR, 'users.json')
 const TRANSACTIONS_FILE = path.join(DATA_DIR, 'transactions.json')
 const GAME_SESSIONS_FILE = path.join(DATA_DIR, 'game_sessions.json')
 
-// In-memory storage with file persistence
+// In-memory storage
 let users = new Map()
+let emailIndex = new Map() // email -> userId
 let transactions = []
 let gameSessions = []
+
+// Write Queues
+let usersDirty = false
+let transactionsDirty = false
+let sessionsDirty = false
 
 // Initialize database
 export async function initDatabase() {
@@ -25,6 +31,13 @@ export async function initDatabase() {
         try {
             const data = JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'))
             users = new Map(Object.entries(data))
+
+            // Rebuild email index
+            for (const [id, user] of users) {
+                if (user.email) {
+                    emailIndex.set(user.email, id)
+                }
+            }
             console.log(`Loaded ${users.size} users from database`)
         } catch (err) {
             console.log('Starting with fresh users database')
@@ -53,22 +66,37 @@ export async function initDatabase() {
         }
     }
 
-    console.log('📦 Database initialized')
+    // Start flush interval
+    setInterval(flushToDisk, 2000)
+
+    console.log('📦 Database initialized with Write Queue')
 }
 
 // Save helpers
-function saveUsers() {
-    const data = Object.fromEntries(users)
-    fs.writeFileSync(USERS_FILE, JSON.stringify(data, null, 2))
+function flushToDisk() {
+    if (usersDirty) {
+        const data = Object.fromEntries(users)
+        fs.writeFileSync(USERS_FILE, JSON.stringify(data, null, 2))
+        usersDirty = false
+    }
+
+    if (transactionsDirty) {
+        fs.writeFileSync(TRANSACTIONS_FILE, JSON.stringify(transactions, null, 2))
+        transactionsDirty = false
+    }
+
+    if (sessionsDirty) {
+        fs.writeFileSync(GAME_SESSIONS_FILE, JSON.stringify(gameSessions, null, 2))
+        sessionsDirty = false
+    }
 }
 
-function saveTransactions() {
-    fs.writeFileSync(TRANSACTIONS_FILE, JSON.stringify(transactions, null, 2))
-}
-
-function saveGameSessions() {
-    fs.writeFileSync(GAME_SESSIONS_FILE, JSON.stringify(gameSessions, null, 2))
-}
+// Graceful shutdown
+process.on('SIGINT', () => {
+    console.log('Flushing database before exit...')
+    flushToDisk()
+    process.exit()
+})
 
 // User operations
 export async function getUser(id) {
@@ -76,6 +104,7 @@ export async function getUser(id) {
 }
 
 export async function getUserByStripeAccountId(stripeAccountId) {
+    // This is still O(n) but less frequent than login
     for (const user of users.values()) {
         if (user.stripeAccountId === stripeAccountId) {
             return user
@@ -85,26 +114,34 @@ export async function getUserByStripeAccountId(stripeAccountId) {
 }
 
 export async function getUserByEmail(email) {
-    for (const user of users.values()) {
-        if (user.email === email) {
-            return user
-        }
+    const id = emailIndex.get(email)
+    if (id) {
+        return users.get(id)
     }
     return null
 }
 
 export async function createUser(userData) {
     users.set(userData.id, userData)
-    saveUsers()
+    if (userData.email) {
+        emailIndex.set(userData.email, userData.id)
+    }
+    usersDirty = true
     return userData
 }
 
 export async function updateUser(id, updates) {
     const user = users.get(id)
     if (user) {
+        // Handle email change
+        if (updates.email && updates.email !== user.email) {
+            emailIndex.delete(user.email)
+            emailIndex.set(updates.email, id)
+        }
+
         const updated = { ...user, ...updates }
         users.set(id, updated)
-        saveUsers()
+        usersDirty = true
         return updated
     }
     return null
@@ -113,7 +150,7 @@ export async function updateUser(id, updates) {
 // Transaction operations
 export async function addTransaction(transaction) {
     transactions.push(transaction)
-    saveTransactions()
+    transactionsDirty = true
     return transaction
 }
 
@@ -136,7 +173,7 @@ export async function updateTransaction(id, updates) {
     const index = transactions.findIndex(tx => tx.id === id)
     if (index >= 0) {
         transactions[index] = { ...transactions[index], ...updates }
-        saveTransactions()
+        transactionsDirty = true
         return transactions[index]
     }
     return null
@@ -145,7 +182,7 @@ export async function updateTransaction(id, updates) {
 // Game session operations
 export async function addGameSession(session) {
     gameSessions.push(session)
-    saveGameSessions()
+    sessionsDirty = true
     return session
 }
 
@@ -153,7 +190,7 @@ export async function updateGameSession(sessionId, updates) {
     const index = gameSessions.findIndex(s => s.id === sessionId)
     if (index >= 0) {
         gameSessions[index] = { ...gameSessions[index], ...updates }
-        saveGameSessions()
+        sessionsDirty = true
         return gameSessions[index]
     }
     return null

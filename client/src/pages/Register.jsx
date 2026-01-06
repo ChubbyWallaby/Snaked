@@ -8,6 +8,8 @@ function Register() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [ageVerified, setAgeVerified] = useState(false)
+    const [termsAccepted, setTermsAccepted] = useState(false)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
@@ -20,6 +22,18 @@ function Register() {
         setError('')
 
         // Validation
+        if (!ageVerified) {
+            setError('You must confirm you are 18 years of age or older')
+            setLoading(false)
+            return
+        }
+
+        if (!termsAccepted) {
+            setError('You must accept the Terms of Service to continue')
+            setLoading(false)
+            return
+        }
+
         if (password !== confirmPassword) {
             setError('Passwords do not match')
             setLoading(false)
@@ -114,6 +128,39 @@ function Register() {
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             required
                         />
+                    </div>
+
+                    {/* Age Verification */}
+                    <div className="checkbox-group">
+                        <label className="checkbox-label">
+                            <input
+                                type="checkbox"
+                                checked={ageVerified}
+                                onChange={(e) => setAgeVerified(e.target.checked)}
+                                required
+                            />
+                            <span>
+                                I confirm that I am <strong>18 years of age or older</strong>
+                            </span>
+                        </label>
+                    </div>
+
+                    {/* Terms of Service */}
+                    <div className="checkbox-group">
+                        <label className="checkbox-label">
+                            <input
+                                type="checkbox"
+                                checked={termsAccepted}
+                                onChange={(e) => setTermsAccepted(e.target.checked)}
+                                required
+                            />
+                            <span>
+                                I agree to the{' '}
+                                <Link to="/terms" target="_blank" className="terms-link">
+                                    Terms of Service
+                                </Link>
+                            </span>
+                        </label>
                     </div>
 
                     <button

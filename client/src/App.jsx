@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard'
 import Game from './pages/Game'
 import Wallet from './pages/Wallet'
 import Admin from './pages/Admin'
+import TermsOfService from './pages/TermsOfService'
 import './styles/App.css'
 
 function PrivateRoute({ children }) {
@@ -34,6 +35,7 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/terms" element={<TermsOfService />} />
                     <Route
                         path="/dashboard"
                         element={

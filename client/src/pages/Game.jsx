@@ -795,4 +795,12 @@ function Game() {
     )
 }
 
-export default Game
+import ErrorBoundary from '../components/ErrorBoundary'
+
+export default function GameWithErrorBoundary() {
+    return (
+        <ErrorBoundary>
+            <Game />
+        </ErrorBoundary>
+    )
+}

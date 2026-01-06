@@ -68,5 +68,11 @@
     "createdAt": "2026-01-05T19:01:45.060Z",
     "stripeAccountId": "acct_test_123",
     "stripeOnboardingComplete": true
+  },
+  "test_user_1767719348856": {
+    "id": "test_user_1767719348856",
+    "username": "QueueTester",
+    "email": "queue@test.com",
+    "balance": 100
   }
 }

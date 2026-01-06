@@ -51,6 +51,9 @@ app.use(cors({
 }))
 app.use(express.json())
 
+// Trust proxy for IP detection (needed for Render, Cloudflare, etc.)
+app.set('trust proxy', true)
+
 // Routes
 app.use('/api/auth', authRoutes)
 app.use('/api/wallet', walletRoutes)

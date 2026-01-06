@@ -2,13 +2,15 @@ import express from 'express'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { v4 as uuidv4 } from 'uuid'
+import crypto from 'crypto'
 import { JWT_SECRET } from '../middleware/auth.js'
+import { geoBlockMiddleware, getClientIp } from '../middleware/geoBlock.js'
 import { getUser, getUserByEmail, createUser, updateUser } from '../db/index.js'
 
 const router = express.Router()
 
-// Register
-router.post('/register', async (req, res) => {
+// Register (with geo-blocking)
+router.post('/register', geoBlockMiddleware, async (req, res) => {
     try {
         const { email, password, username } = req.body
 
@@ -37,6 +39,12 @@ router.post('/register', async (req, res) => {
 
         // Create user
         const userId = uuidv4()
+        const now = new Date().toISOString()
+
+        // Store registration location for compliance (hash IP for privacy)
+        const registrationIp = getClientIp(req)
+        const registrationIpHash = crypto.createHash('sha256').update(registrationIp).digest('hex')
+
         const user = await createUser({
             id: userId,
             email,
@@ -46,7 +54,14 @@ router.post('/register', async (req, res) => {
             gamesPlayed: 0,
             totalEarnings: 0,
             survivalRate: 0,
-            createdAt: new Date().toISOString()
+            ageVerified: true,
+            ageVerifiedAt: now,
+            termsAccepted: true,
+            termsAcceptedAt: now,
+            registrationCountry: req.geoLocation?.country || 'Unknown',
+            registrationCountryCode: req.geoLocation?.countryCode || 'XX',
+            registrationIpHash,
+            createdAt: now
         })
 
         // Generate token
@@ -77,8 +92,8 @@ router.post('/register', async (req, res) => {
     }
 })
 
-// Login
-router.post('/login', async (req, res) => {
+// Login (with geo-blocking)
+router.post('/login', geoBlockMiddleware, async (req, res) => {
     try {
         const { email, password } = req.body
 

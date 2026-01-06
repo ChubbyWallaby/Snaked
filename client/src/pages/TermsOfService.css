@@ -1,0 +1,149 @@
+.terms-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+    padding: 40px 20px;
+}
+
+.terms-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(0, 255, 136, 0.1);
+    padding: 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.terms-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 2px solid rgba(0, 255, 136, 0.2);
+}
+
+.terms-header h1 {
+    font-size: 2.5rem;
+    color: #00ff88;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.last-updated {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.terms-content {
+    color: #e0e0e0;
+    line-height: 1.8;
+}
+
+.terms-content section {
+    margin-bottom: 35px;
+}
+
+.terms-content h2 {
+    color: #00ff88;
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    margin-top: 30px;
+    font-weight: 600;
+}
+
+.terms-content h3 {
+    color: #00d4ff;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+    margin-top: 20px;
+    font-weight: 500;
+}
+
+.terms-content p {
+    margin-bottom: 15px;
+    color: #c0c0c0;
+}
+
+.terms-content ul {
+    margin-left: 25px;
+    margin-bottom: 15px;
+}
+
+.terms-content li {
+    margin-bottom: 10px;
+    color: #c0c0c0;
+    list-style-type: disc;
+}
+
+.terms-content strong {
+    color: #fff;
+    font-weight: 600;
+}
+
+.disclaimer-box {
+    background: rgba(255, 68, 68, 0.1);
+    border: 2px solid rgba(255, 68, 68, 0.3);
+    border-radius: 12px;
+    padding: 25px;
+    margin-top: 40px;
+}
+
+.disclaimer-box h3 {
+    color: #ff4444;
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.disclaimer-box ul {
+    margin-left: 0;
+    list-style: none;
+}
+
+.disclaimer-box li {
+    padding: 8px 0;
+    color: #ffcccc;
+    border-bottom: 1px solid rgba(255, 68, 68, 0.1);
+}
+
+.disclaimer-box li:last-child {
+    border-bottom: none;
+}
+
+.disclaimer-box strong {
+    color: #ff6666;
+}
+
+.terms-footer {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid rgba(0, 255, 136, 0.2);
+    text-align: center;
+}
+
+.terms-footer .btn {
+    min-width: 200px;
+    padding: 12px 30px;
+    font-size: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .terms-container {
+        padding: 25px;
+    }
+
+    .terms-header h1 {
+        font-size: 2rem;
+    }
+
+    .terms-content h2 {
+        font-size: 1.4rem;
+    }
+
+    .terms-content h3 {
+        font-size: 1.1rem;
+    }
+}
