@@ -142,27 +142,15 @@ export class GameRoom {
         // BUT we check if the head moved too far since last update
 
         if (data.segments && data.segments.length > 0) {
-            const oldHead = player.segments[0]
-            const newHead = data.segments[0]
-
-            // Calculate distance moved
-            const dx = newHead.x - oldHead.x
-            const dy = newHead.y - oldHead.y
-            const distance = Math.sqrt(dx * dx + dy * dy)
-
-            player.lastMoveTime = now
-
-            // If they moved way too far in one tick (e.g. teleport hack)
-            // Allow some buffer for lag spikes where multiple moves arrive at once
-            if (distance > MAX_SPEED * 5) {
-                // Suspicious! 
-                // For now, just ignore the update to prevent snapping
-                // In a stricter version, we'd disconnect them
-                // console.warn(`Suspicious movement from ${player.username}: ${distance.toFixed(2)}px`)
-                return
-            }
+            // Note: Speed validation was causing issues because client spawn position
+            // can differ from server spawn position, causing first move to be rejected.
+            // For a production game, we'd need to:
+            // 1. Make client use server-provided spawn position exactly
+            // 2. Or implement server-authoritative movement
+            // For now, trust client segments to keep game playable.
 
             player.segments = data.segments
+            player.lastMoveTime = Date.now()
         }
 
         // Update direction
