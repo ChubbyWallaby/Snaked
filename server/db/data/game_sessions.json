@@ -1,0 +1,586 @@
+[
+  {
+    "id": "2899d47f-790b-4112-8331-ffe3b0cde41e",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T10:20:24.843Z",
+    "entryFee": 0.005,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "a868b023-ecc1-42ad-8cfa-1ba72bcd3074",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T10:25:02.291Z",
+    "entryFee": 0.005,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "7e1438b7-463d-43e8-95cd-702ccebdfce8",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T10:25:39.590Z",
+    "entryFee": 0.005,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "90d1e63d-a9b2-4892-b43b-59199ba0c2fd",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T11:06:58.598Z",
+    "entryFee": 0.005,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "bbffdfb6-4fc8-4e76-90ec-947b9d1c47da",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T11:09:38.972Z",
+    "entryFee": 0.005,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "01d6d30a-e435-477d-8d66-ff9f03f6242e",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T11:13:45.377Z",
+    "entryFee": 0.005,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "b9078135-c688-46fa-b32b-ae0b3b30cc94",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "startedAt": "2026-01-05T11:18:39.994Z",
+    "entryFee": 0.005,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "b430c6b3-6930-46aa-85ec-9c6fc2af8941",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T11:18:52.334Z",
+    "entryFee": 0.005,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "d1dd00be-5549-44ad-aac4-e6b2898c412b",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "startedAt": "2026-01-05T11:19:17.281Z",
+    "entryFee": 0.005,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "4235856b-be70-46f6-9303-fe0d03eaaccc",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "startedAt": "2026-01-05T11:19:18.501Z",
+    "entryFee": 0.005,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "d53609a3-0fb3-48f1-8ff5-d51346636825",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "startedAt": "2026-01-05T11:21:51.451Z",
+    "entryFee": 0.005,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "7f522d05-6b9d-467f-847f-487b5dbb3628",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T11:21:54.096Z",
+    "entryFee": 0.005,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "bc688d4c-bdd3-4e5a-aa3f-ab8fde33d4c5",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T11:22:08.260Z",
+    "entryFee": 0.005,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "42585df2-b405-4d4e-90ea-78ca78879f06",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T11:22:08.925Z",
+    "entryFee": 0.005,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "194d3484-c962-4578-a615-ca67e6f7fa94",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "startedAt": "2026-01-05T11:24:59.659Z",
+    "entryFee": 0.005,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "d1c8c521-4c21-4f61-81dc-0d4b9c49bd45",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T11:27:44.627Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "f741ee12-a44d-4dbb-a273-4d7e71f8d025",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "startedAt": "2026-01-05T11:27:49.934Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "7b0b2327-5802-4fa5-ae60-aa3dbd58155f",
+    "userId": "874c8067-0472-4562-b1be-869aa92b3a0d",
+    "startedAt": "2026-01-05T12:23:11.055Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "82faf79a-fc09-4bac-88da-46322c2bd06b",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T12:23:11.641Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "f68617ec-bdf0-4ccf-b095-abd2cebc5cbe",
+    "userId": "874c8067-0472-4562-b1be-869aa92b3a0d",
+    "startedAt": "2026-01-05T12:23:24.900Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "004c84cf-55aa-4b8a-b784-db8f8107cc1d",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T12:24:04.725Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "f6bb04b5-a1b3-4747-b948-b0185a4ba7b7",
+    "userId": "874c8067-0472-4562-b1be-869aa92b3a0d",
+    "startedAt": "2026-01-05T12:24:26.247Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "fe4d1e38-82cb-439d-88fa-fcda617c0821",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T12:26:04.103Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "d7a5925f-d7c0-4367-abff-21acc3057134",
+    "userId": "874c8067-0472-4562-b1be-869aa92b3a0d",
+    "startedAt": "2026-01-05T12:26:16.205Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "4203e528-4c85-4f46-bca2-8161bd73d6ae",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T12:26:36.227Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "2f924051-874d-457e-a0f4-9b137656f839",
+    "userId": "874c8067-0472-4562-b1be-869aa92b3a0d",
+    "startedAt": "2026-01-05T12:31:32.323Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "28b714a0-8683-467b-9b7c-e796c7ad0bd5",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "startedAt": "2026-01-05T12:32:01.878Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "17ef11fb-7730-4675-b6f9-76d466ee9f48",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T12:32:15.218Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "c7338e91-f90b-47c9-9539-44cc6bd43a1a",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T12:33:30.517Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "e93b4666-cce6-40b2-817f-931b6a61f83a",
+    "userId": "874c8067-0472-4562-b1be-869aa92b3a0d",
+    "startedAt": "2026-01-05T12:34:10.781Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "20359780-2486-4dcd-a472-0eebe9919c6c",
+    "userId": "874c8067-0472-4562-b1be-869aa92b3a0d",
+    "startedAt": "2026-01-05T12:34:21.465Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "2fc866eb-c78d-40c6-93da-2acf3fb96eba",
+    "userId": "b1c62dc1-85a3-4de0-87a6-2f5c72414ae6",
+    "startedAt": "2026-01-05T14:00:35.905Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "d0a6831d-d134-4f15-b041-6f4569abba99",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T14:11:54.955Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "f7274cfd-a85d-423f-84ed-866411749bb3",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T16:23:43.689Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "9daaf1fa-407b-49e7-a8bb-6803c4e7aa80",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T16:24:08.497Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "d038ae22-54d8-44b9-85b7-cae0779ca3fd",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "startedAt": "2026-01-05T16:25:03.890Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "e2bde7e3-0eaa-4153-94a0-5a0a8a37c4bd",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "startedAt": "2026-01-05T16:26:12.253Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "b404049a-44b4-4afb-a233-04e8528172fd",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "startedAt": "2026-01-05T16:26:45.339Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "ae67daab-f09a-4c56-9ba3-43696737a293",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "startedAt": "2026-01-05T16:26:50.589Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "87850a75-ef44-4e6b-b4a3-b590dc377754",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "startedAt": "2026-01-05T16:27:04.557Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "3b24938e-5644-46e7-8990-4cb09e0f1593",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T16:28:31.984Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "a0f6f7e2-fba1-4618-9618-c9ddbaef004b",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T16:30:14.240Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "6f3573da-11c3-4c22-8ed1-116bfd6f6ac1",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T18:01:31.124Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "9bc77497-25b8-4f4b-9113-8e2e3af6cbbe",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T18:01:39.197Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "c3ed1d3e-ecf1-4410-90c7-6d5e15b74ba5",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "startedAt": "2026-01-05T18:02:46.924Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "762e326c-e340-4526-ab0f-2a4d55a759bb",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "startedAt": "2026-01-05T18:03:14.832Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "9e092e70-926f-4ceb-b9df-7a0d9cdd4817",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "startedAt": "2026-01-05T18:03:16.330Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "eefa00ab-e45d-4fd0-8c5c-38c04c3bfdfa",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T18:07:10.917Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "cf1c4fbd-d60e-4c93-8bb9-d589889910f9",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "startedAt": "2026-01-05T20:08:19.314Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "8489fc60-6929-4608-9cd6-5f4dc3d7105a",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "startedAt": "2026-01-05T20:09:35.001Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "c096614f-fe34-4a77-990e-fa32e5ebeb21",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "startedAt": "2026-01-05T20:09:37.665Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "fdcd9e09-9a34-4393-a43b-e7d1889fbf73",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "startedAt": "2026-01-05T20:11:05.496Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "17af3a3f-e7eb-4bf8-80e0-2f38a2bd6b6b",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "startedAt": "2026-01-05T20:11:09.581Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "2047d959-49d8-4328-befb-1bc0dfbcb03d",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "startedAt": "2026-01-05T20:13:38.403Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "07470a97-536b-4a17-8453-468ae9a52333",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "startedAt": "2026-01-05T20:13:39.919Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "30c37099-25f6-4ca5-b88d-eef2af1761e2",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "startedAt": "2026-01-05T20:13:41.447Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "ce68687e-4515-403e-814f-b547e416abb1",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "startedAt": "2026-01-05T20:13:47.345Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "4ffe2da3-c684-4975-9f28-8b3cea43f8aa",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "startedAt": "2026-01-05T20:13:50.841Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "7cc11629-2213-4817-958a-74f6fec2c21d",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "startedAt": "2026-01-05T20:13:55.593Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "a4e59cbb-6dae-4895-8da4-a07cea39b515",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T20:14:11.261Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "2e50a577-00b9-4290-9bf8-594645ee47f8",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T20:14:22.205Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "8df2b83b-3fe5-46da-828b-1caae748c610",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T20:14:25.723Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "b6dc9311-dd34-4097-963d-7f6ba1aa19b0",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "startedAt": "2026-01-05T20:15:09.865Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "70cbcfb1-b79c-4df7-bf5f-a30da0fe4a06",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "startedAt": "2026-01-05T20:15:17.670Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "75256287-b47d-4102-b0d3-4fe8c6e10762",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "startedAt": "2026-01-05T20:15:25.004Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "f8f48396-a9bd-49a5-9b94-5d234f1d1da5",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T20:18:47.536Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "94c3312e-c3be-457f-a704-37e18a0c8633",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T20:18:53.104Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "567619fd-d6a1-4e2d-a719-fdf750b5c943",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "startedAt": "2026-01-05T20:18:57.111Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "70718cdc-1789-4d37-a4d0-4f6c36c1a992",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "startedAt": "2026-01-05T20:19:01.678Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "e43d50ab-3440-4ee2-b715-87002c6f5539",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "startedAt": "2026-01-05T20:24:25.941Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "368996fe-cc9a-431e-b2c5-11fef7eb7d31",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "startedAt": "2026-01-05T20:24:29.505Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "cef165c0-8f6f-406d-992e-d2d780c84b1a",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "startedAt": "2026-01-05T20:24:31.845Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  },
+  {
+    "id": "c3a2a0eb-536f-4198-a10f-88f5f1d0fd06",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "startedAt": "2026-01-05T20:26:02.620Z",
+    "entryFee": 0.5,
+    "moneyCollected": 0,
+    "moneyLost": 0
+  }
+]

@@ -1,0 +1,864 @@
+[
+  {
+    "id": "8c79fe42-858a-44cf-b519-044b00b6497e",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "withdrawal",
+    "amount": -100,
+    "status": "partially_completed",
+    "createdAt": "2026-01-05T18:41:59.663Z",
+    "stripeRefunds": [
+      {
+        "depositId": "d36ab438-9bae-48f9-829b-8e38eea7f1d4",
+        "stripePaymentId": "pi_3SmIYJHvmldydB2Q0oDYBrAx",
+        "refundId": "re_3SmIYJHvmldydB2Q0rUUczbG",
+        "amount": 50
+      },
+      {
+        "depositId": "ca6e03d3-40ae-4346-a929-a88263e740bb",
+        "stripePaymentId": "pi_3SmI5MHvmldydB2Q1yu1zi3z",
+        "refundId": "re_3SmI5MHvmldydB2Q134BUxrP",
+        "amount": 5
+      },
+      {
+        "depositId": "585d7e24-6c8d-4501-9aca-8ce47f31ea73",
+        "stripePaymentId": "pi_3SmGdPHvmldydB2Q1DdGamlB",
+        "refundId": "re_3SmGdPHvmldydB2Q1BzsuQKx",
+        "amount": 20
+      },
+      {
+        "depositId": "6301e8bd-0150-45fd-97f0-17e1fb031fba",
+        "stripePaymentId": "pi_3SmBcPHvmldydB2Q1VjLUxeM",
+        "refundId": "re_3SmBcPHvmldydB2Q1guflP0S",
+        "amount": 10
+      }
+    ],
+    "remainingAmount": 15,
+    "updatedAt": "2026-01-05T18:49:53.264Z"
+  },
+  {
+    "id": "ccff1d56-ebee-4ba7-819b-2868aa0652f5",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "deposit",
+    "amount": 100,
+    "stripePaymentId": "test_5d317e20-30b7-4a5e-9376-c921004cdab0",
+    "createdAt": "2026-01-05T18:41:54.882Z"
+  },
+  {
+    "id": "d36ab438-9bae-48f9-829b-8e38eea7f1d4",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "deposit",
+    "amount": 50,
+    "stripePaymentId": "pi_3SmIYJHvmldydB2Q0oDYBrAx",
+    "createdAt": "2026-01-05T18:30:52.908Z"
+  },
+  {
+    "id": "cd360af6-745d-4dbd-8418-38c128d54e0e",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "withdrawal",
+    "amount": -100,
+    "status": "completed",
+    "createdAt": "2026-01-05T18:27:17.338Z",
+    "updatedAt": "2026-01-05T18:39:56.206Z"
+  },
+  {
+    "id": "fea68824-d2a2-4595-b05e-d6036d8eda97",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T18:07:10.916Z"
+  },
+  {
+    "id": "8c4ffe07-74b7-42b2-b683-e74d95da67e8",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "earnings",
+    "amount": 2.3,
+    "createdAt": "2026-01-05T18:04:44.225Z"
+  },
+  {
+    "id": "b70f72f1-11a3-4670-a9ee-f7c2bbc0ea08",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T18:03:16.329Z"
+  },
+  {
+    "id": "9d4f7edb-b1c3-4bba-8efd-a80255987543",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T18:03:14.832Z"
+  },
+  {
+    "id": "98e517de-dc92-4e62-a04e-f6c7bfd594b9",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T18:02:46.923Z"
+  },
+  {
+    "id": "d86046ea-3cd2-45ba-a712-72c1fa2ed276",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T18:01:39.197Z"
+  },
+  {
+    "id": "9a827e98-236c-45c8-8fac-ac2b72131ed4",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T18:01:31.123Z"
+  },
+  {
+    "id": "4b5e8c07-225e-4dfb-b67e-348ffbf1507a",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "withdrawal",
+    "amount": -10,
+    "status": "completed",
+    "createdAt": "2026-01-05T18:01:07.916Z",
+    "updatedAt": "2026-01-05T18:39:50.110Z"
+  },
+  {
+    "id": "ca6e03d3-40ae-4346-a929-a88263e740bb",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "deposit",
+    "amount": 5,
+    "stripePaymentId": "pi_3SmI5MHvmldydB2Q1yu1zi3z",
+    "createdAt": "2026-01-05T18:00:58.396Z"
+  },
+  {
+    "id": "7f213917-a472-49bf-abac-4571279ca665",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "deposit",
+    "amount": 100,
+    "stripePaymentId": "test_4efa514b-cde9-40e7-b87f-3d2b36a115f5",
+    "createdAt": "2026-01-05T18:00:26.592Z"
+  },
+  {
+    "id": "74697db4-ade8-4a26-b60b-2a5e147faa35",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T16:30:14.239Z"
+  },
+  {
+    "id": "249b0429-0c81-4959-afc0-3d835b355e2d",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T16:28:31.983Z"
+  },
+  {
+    "id": "585d7e24-6c8d-4501-9aca-8ce47f31ea73",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "deposit",
+    "amount": 20,
+    "stripePaymentId": "pi_3SmGdPHvmldydB2Q1DdGamlB",
+    "createdAt": "2026-01-05T16:28:01.250Z"
+  },
+  {
+    "id": "623be5e1-bf7e-4522-a928-aafa67752ba3",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "withdrawal",
+    "amount": -300,
+    "status": "completed",
+    "createdAt": "2026-01-05T16:27:36.246Z",
+    "updatedAt": "2026-01-05T18:39:46.406Z"
+  },
+  {
+    "id": "e17b5d6a-8300-4ed9-81ae-50bf5e38933b",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "earnings",
+    "amount": 1.3500000000000005,
+    "createdAt": "2026-01-05T16:27:17.485Z"
+  },
+  {
+    "id": "acfff277-1deb-44a7-bacb-38aa9bcf4e7c",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T16:27:04.556Z"
+  },
+  {
+    "id": "7c8bfe64-f719-4b1c-b570-e15dd4032342",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T16:26:50.587Z"
+  },
+  {
+    "id": "f3cf2893-073d-47c4-9fe7-6c1c6614fe64",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T16:26:45.338Z"
+  },
+  {
+    "id": "e0312cdf-8b80-4198-b467-1437431b9192",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T16:26:12.253Z"
+  },
+  {
+    "id": "265e3000-a128-465d-9eed-f62f3e3f9e40",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T16:25:03.889Z"
+  },
+  {
+    "id": "44ebbfb1-fe6a-474d-b827-713c2d0df339",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T16:24:08.496Z"
+  },
+  {
+    "id": "aa13088a-cde6-4cb1-850f-b69e9007df6a",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T16:23:43.688Z"
+  },
+  {
+    "id": "47116914-718e-45b5-8e92-ef202d8b4951",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T14:11:54.954Z"
+  },
+  {
+    "id": "68e23838-d511-40ad-bc7e-d2f2d036e691",
+    "userId": "b1c62dc1-85a3-4de0-87a6-2f5c72414ae6",
+    "type": "earnings",
+    "amount": 0.5,
+    "createdAt": "2026-01-05T14:03:38.659Z"
+  },
+  {
+    "id": "3d8deba8-1805-4698-b88c-6f8cbcc4e113",
+    "userId": "b1c62dc1-85a3-4de0-87a6-2f5c72414ae6",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T14:00:35.904Z"
+  },
+  {
+    "id": "641540b1-5a25-4e1a-9140-59c363414a56",
+    "userId": "b1c62dc1-85a3-4de0-87a6-2f5c72414ae6",
+    "type": "deposit",
+    "amount": 2,
+    "stripePaymentId": "pi_3SmEKUHvmldydB2Q0B2cxGJb",
+    "createdAt": "2026-01-05T14:00:19.917Z"
+  },
+  {
+    "id": "e90f2285-39ba-4e97-83fb-d52e5171d07d",
+    "userId": "b1c62dc1-85a3-4de0-87a6-2f5c72414ae6",
+    "type": "withdrawal",
+    "amount": -50,
+    "status": "rejected",
+    "createdAt": "2026-01-05T13:58:23.530Z",
+    "updatedAt": "2026-01-05T18:39:57.497Z"
+  },
+  {
+    "id": "c739578d-e37a-4f51-9d8a-cfe94680ca8f",
+    "userId": "b1c62dc1-85a3-4de0-87a6-2f5c72414ae6",
+    "type": "deposit",
+    "amount": 100,
+    "stripePaymentId": "test_4f18f9a6-8b22-4d0a-8dc1-7b35dc6658c5",
+    "createdAt": "2026-01-05T13:56:35.585Z"
+  },
+  {
+    "id": "feec6ac5-612f-42d3-924a-af9f4554ae45",
+    "userId": "874c8067-0472-4562-b1be-869aa92b3a0d",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T12:34:21.464Z"
+  },
+  {
+    "id": "3f219f80-c7be-4399-b5ad-2bfb502ba982",
+    "userId": "874c8067-0472-4562-b1be-869aa92b3a0d",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T12:34:10.780Z"
+  },
+  {
+    "id": "9e4d5a50-25bf-4a0e-bc29-2795b188ad91",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T12:33:30.516Z"
+  },
+  {
+    "id": "9ceccbf9-fbad-4047-8850-d4ef005e2690",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T12:32:15.217Z"
+  },
+  {
+    "id": "2c06e748-638f-48da-95f3-44f123b379f9",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T12:32:01.877Z"
+  },
+  {
+    "id": "6238f90e-7877-4fe2-93ec-04767c3c0636",
+    "userId": "874c8067-0472-4562-b1be-869aa92b3a0d",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T12:31:32.323Z"
+  },
+  {
+    "id": "12e3e498-99a8-4f36-b255-c62151ae1f58",
+    "userId": "874c8067-0472-4562-b1be-869aa92b3a0d",
+    "type": "earnings",
+    "amount": 1.0000000000000002,
+    "createdAt": "2026-01-05T12:29:57.438Z"
+  },
+  {
+    "id": "c8e39e4e-f1fe-4ea9-a4c7-b665d3dcbc3d",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "earnings",
+    "amount": 7.182499999999997,
+    "createdAt": "2026-01-05T12:29:43.512Z"
+  },
+  {
+    "id": "22f4867f-028e-4386-b00a-46ad20b66316",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T12:26:36.226Z"
+  },
+  {
+    "id": "f3dbbff0-2289-4685-8451-7c8fd1eede65",
+    "userId": "874c8067-0472-4562-b1be-869aa92b3a0d",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T12:26:16.205Z"
+  },
+  {
+    "id": "2c0869ed-dc56-4b73-a1d5-e67c7c660f99",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T12:26:04.102Z"
+  },
+  {
+    "id": "d642c561-5ecd-4c2d-81be-b9a9cb9490e8",
+    "userId": "874c8067-0472-4562-b1be-869aa92b3a0d",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T12:24:26.246Z"
+  },
+  {
+    "id": "7949d05f-9e5c-488d-bcaa-c800ce2bfcb8",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T12:24:04.724Z"
+  },
+  {
+    "id": "76424dd9-244e-4da5-9817-3ddc62b6c0bc",
+    "userId": "874c8067-0472-4562-b1be-869aa92b3a0d",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T12:23:24.899Z"
+  },
+  {
+    "id": "2c5f7426-e66b-41a1-9a4f-166370d10349",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T12:23:11.641Z"
+  },
+  {
+    "id": "9fb002db-5012-464c-9a4d-4c4761e04fd1",
+    "userId": "874c8067-0472-4562-b1be-869aa92b3a0d",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T12:23:11.055Z"
+  },
+  {
+    "id": "4b69e58b-f7b8-4a50-ae0c-2fa63136d71c",
+    "userId": "874c8067-0472-4562-b1be-869aa92b3a0d",
+    "type": "deposit",
+    "amount": 100,
+    "stripePaymentId": "test_f23d020a-9a4f-4ccd-a9e8-36a4a9246f9e",
+    "createdAt": "2026-01-05T12:23:01.091Z"
+  },
+  {
+    "id": "e23ae87d-42b0-442f-b0b8-bd271cafecf3",
+    "userId": "874c8067-0472-4562-b1be-869aa92b3a0d",
+    "type": "deposit",
+    "amount": 100,
+    "stripePaymentId": "pi_3SmCoBHvmldydB2Q0OC6vEj2",
+    "createdAt": "2026-01-05T12:22:54.138Z"
+  },
+  {
+    "id": "27aaad7d-12f0-4492-930f-ae56cf2f938f",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T11:27:49.933Z"
+  },
+  {
+    "id": "937a8922-3a84-4244-ad7b-33b81cb0dd73",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T11:27:44.627Z"
+  },
+  {
+    "id": "b9288432-5caa-4055-972e-7ccc93736e38",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "earnings",
+    "amount": 0.015000000000000003,
+    "createdAt": "2026-01-05T11:25:35.274Z"
+  },
+  {
+    "id": "ded6ddf5-892b-4dcf-8908-c8bc927d83cd",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "game_fee",
+    "amount": -0.005,
+    "createdAt": "2026-01-05T11:24:59.659Z"
+  },
+  {
+    "id": "74ec3254-1ddd-4f5c-b2e8-bfad765dcd1b",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.005,
+    "createdAt": "2026-01-05T11:22:08.925Z"
+  },
+  {
+    "id": "3cdd8bc3-4959-4315-9650-9e778d5a47a7",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.005,
+    "createdAt": "2026-01-05T11:22:08.259Z"
+  },
+  {
+    "id": "288f1bf3-b153-41f2-a577-801d9241f3f7",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.005,
+    "createdAt": "2026-01-05T11:21:54.095Z"
+  },
+  {
+    "id": "fd96aca5-f696-4394-a3f0-06bf26c6b9ed",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "game_fee",
+    "amount": -0.005,
+    "createdAt": "2026-01-05T11:21:51.450Z"
+  },
+  {
+    "id": "b53bad71-0871-4e6e-89cb-fc50811c75da",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "game_fee",
+    "amount": -0.005,
+    "createdAt": "2026-01-05T11:19:18.501Z"
+  },
+  {
+    "id": "7662775c-14bb-416a-a032-a1bf8c3336a5",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "game_fee",
+    "amount": -0.005,
+    "createdAt": "2026-01-05T11:19:17.280Z"
+  },
+  {
+    "id": "21997e79-fdfd-4c9e-be0a-f3fcd7b7e631",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.005,
+    "createdAt": "2026-01-05T11:18:52.333Z"
+  },
+  {
+    "id": "fbeba97e-a692-495e-85b5-500896152328",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "game_fee",
+    "amount": -0.005,
+    "createdAt": "2026-01-05T11:18:39.994Z"
+  },
+  {
+    "id": "0fac647b-5f51-477e-968c-7cab5a00240a",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "deposit",
+    "amount": 10,
+    "stripePaymentId": "pi_3SmBnxHvmldydB2Q1uBcu85P",
+    "createdAt": "2026-01-05T11:18:35.726Z"
+  },
+  {
+    "id": "e3156eb9-3ebd-41f0-a38e-5e4fb2b3248a",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.005,
+    "createdAt": "2026-01-05T11:13:45.376Z"
+  },
+  {
+    "id": "e90a3ff8-2460-47b5-9cac-77eb22035b62",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "earnings",
+    "amount": 0.015000000000000003,
+    "createdAt": "2026-01-05T11:12:43.179Z"
+  },
+  {
+    "id": "94689e2a-dcf1-4d83-ab0c-1ad4d8896bb8",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.005,
+    "createdAt": "2026-01-05T11:09:38.971Z"
+  },
+  {
+    "id": "0818b4fe-f6a9-4dff-9250-f8b29a14f54c",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.005,
+    "createdAt": "2026-01-05T11:06:58.597Z"
+  },
+  {
+    "id": "6301e8bd-0150-45fd-97f0-17e1fb031fba",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "deposit",
+    "amount": 10,
+    "stripePaymentId": "pi_3SmBcPHvmldydB2Q1VjLUxeM",
+    "createdAt": "2026-01-05T11:06:38.854Z"
+  },
+  {
+    "id": "26eeeda5-14e1-4636-aca3-5a4d5572cc66",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "deposit",
+    "amount": 100,
+    "stripePaymentId": "test_39e2de2c-638d-4d33-a996-511921667d40",
+    "createdAt": "2026-01-05T11:06:01.203Z"
+  },
+  {
+    "id": "aa3924bd-246d-4d4f-a420-dff1a15be9c8",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "deposit",
+    "amount": 100,
+    "stripePaymentId": "test_893aa56b-1863-4620-9430-3becf7414227",
+    "createdAt": "2026-01-05T10:42:35.991Z"
+  },
+  {
+    "id": "cfca6690-68f2-408f-a597-f2a8c78dd8e8",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.005,
+    "createdAt": "2026-01-05T10:25:39.590Z"
+  },
+  {
+    "id": "6ab8fdf2-ba37-4efb-b2a1-b9483b0dbc1e",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.005,
+    "createdAt": "2026-01-05T10:25:02.291Z"
+  },
+  {
+    "id": "97e59981-67e4-4b38-b2a8-afa1bdde9b68",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.005,
+    "createdAt": "2026-01-05T10:20:24.843Z"
+  },
+  {
+    "id": "97c404b5-6ae7-47a8-9a1c-987820fa3fce",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "withdrawal",
+    "amount": -10,
+    "status": "pending",
+    "createdAt": "2026-01-05T18:50:04.505Z"
+  },
+  {
+    "id": "dc16650d-3366-4a8e-82eb-6004e11dfbd2",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:08:19.314Z"
+  },
+  {
+    "id": "cdd15a30-7f90-4b38-b2fc-65eaf3154649",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:09:35.000Z"
+  },
+  {
+    "id": "608a6ce9-fea9-42c7-b78d-6e1a74b7ee17",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:09:37.665Z"
+  },
+  {
+    "id": "f4dd816d-b0e4-43e9-aa61-18ba81b3f54d",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:11:05.495Z"
+  },
+  {
+    "id": "c2bc59c9-c85f-402e-8543-79d172624879",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:11:09.580Z"
+  },
+  {
+    "id": "fa3084df-5276-4c04-af61-ae79eb1ee339",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:13:38.401Z"
+  },
+  {
+    "id": "70d80201-294a-45ae-b0e9-d04a6909ebf4",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "refund",
+    "amount": 0.5,
+    "description": "Lobby cancellation refund",
+    "createdAt": "2026-01-05T20:13:39.258Z"
+  },
+  {
+    "id": "2786af61-4ee9-4f93-93d1-e79c91481681",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:13:39.918Z"
+  },
+  {
+    "id": "0af135b0-fb00-453f-a526-e6a3961197a6",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "refund",
+    "amount": 0.5,
+    "description": "Lobby cancellation refund",
+    "createdAt": "2026-01-05T20:13:40.601Z"
+  },
+  {
+    "id": "f32865d5-f161-4bb2-a368-99e484bc861f",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:13:41.446Z"
+  },
+  {
+    "id": "896b9f4b-4a78-43a5-86d6-3327fb6e9b17",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "refund",
+    "amount": 0.5,
+    "description": "Lobby cancellation refund",
+    "createdAt": "2026-01-05T20:13:42.145Z"
+  },
+  {
+    "id": "4145785f-1095-457c-9bf8-035dcf1ac27b",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:13:47.345Z"
+  },
+  {
+    "id": "f8c0189b-f6bb-4526-be4e-55c2011eaf5c",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "refund",
+    "amount": 0.5,
+    "description": "Lobby cancellation refund",
+    "createdAt": "2026-01-05T20:13:49.554Z"
+  },
+  {
+    "id": "24161593-03f6-4e04-a5f4-10c87081612d",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:13:50.841Z"
+  },
+  {
+    "id": "bcb67969-20d1-4540-ab93-c52d04d76a9c",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "refund",
+    "amount": 0.5,
+    "description": "Lobby cancellation refund",
+    "createdAt": "2026-01-05T20:13:51.698Z"
+  },
+  {
+    "id": "5bffba2d-a743-4434-ae30-8e4afc07b3fa",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:13:55.593Z"
+  },
+  {
+    "id": "c723a8fd-be8d-4607-9fb1-d2e58dedad74",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:14:11.260Z"
+  },
+  {
+    "id": "cdcecb6c-be4e-47ea-8c46-c4080bb883d3",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "refund",
+    "amount": 0.5,
+    "description": "Lobby cancellation refund",
+    "createdAt": "2026-01-05T20:14:14.209Z"
+  },
+  {
+    "id": "a776ccbe-aa87-43c9-9460-ebd5c1ca0324",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:14:22.202Z"
+  },
+  {
+    "id": "baef4adf-eb18-44aa-b832-5df5ae4367b9",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "refund",
+    "amount": 0.5,
+    "description": "Lobby cancellation refund",
+    "createdAt": "2026-01-05T20:14:23.810Z"
+  },
+  {
+    "id": "e8b81bea-daf6-4282-b768-bd9944b87e1c",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:14:25.722Z"
+  },
+  {
+    "id": "28868c23-76fc-44b3-86df-15c4a0842cb8",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:15:09.865Z"
+  },
+  {
+    "id": "cfc3c071-9cb0-4115-809e-2928d0f2a59a",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "refund",
+    "amount": 0.5,
+    "description": "Lobby cancellation refund",
+    "createdAt": "2026-01-05T20:15:12.186Z"
+  },
+  {
+    "id": "ba63e91b-98b5-4a21-9e1d-dac1bd765199",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:15:17.669Z"
+  },
+  {
+    "id": "7e29d212-23d7-40c7-9ffa-da8eed777257",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "refund",
+    "amount": 0.5,
+    "description": "Lobby cancellation refund",
+    "createdAt": "2026-01-05T20:15:23.453Z"
+  },
+  {
+    "id": "8362f682-465a-40ae-8b24-36307837c738",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:15:25.003Z"
+  },
+  {
+    "id": "8f9fde12-d5bf-41e0-adc3-7d14e95f2ac1",
+    "userId": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "type": "refund",
+    "amount": 0.5,
+    "description": "Lobby cancellation refund",
+    "createdAt": "2026-01-05T20:16:13.730Z"
+  },
+  {
+    "id": "7b0e3eda-3518-4997-b920-7e1e613231d1",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "earnings",
+    "amount": 0.5,
+    "createdAt": "2026-01-05T20:18:40.230Z"
+  },
+  {
+    "id": "c3ed91d9-2e51-489a-873e-eec94e49ddd8",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "earnings",
+    "amount": 0.5,
+    "createdAt": "2026-01-05T20:18:41.588Z"
+  },
+  {
+    "id": "4edc5104-e458-436c-9699-c7237382c85b",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:18:47.536Z"
+  },
+  {
+    "id": "74f21e9f-36fe-41a6-b0f1-89314f8924f0",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "refund",
+    "amount": 0.5,
+    "description": "Lobby cancellation refund",
+    "createdAt": "2026-01-05T20:18:49.133Z"
+  },
+  {
+    "id": "3f3d333c-b049-4ca2-927f-42a1abc0a4f9",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:18:53.103Z"
+  },
+  {
+    "id": "53f5b45a-bee7-4cb2-9e28-faeb90ce088b",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:18:57.109Z"
+  },
+  {
+    "id": "1daafe26-eca8-4d66-8ca7-94317545259a",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "refund",
+    "amount": 0.5,
+    "description": "Lobby cancellation refund",
+    "createdAt": "2026-01-05T20:19:00.018Z"
+  },
+  {
+    "id": "e134ace0-24bb-4018-8181-8707bc80469a",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:19:01.676Z"
+  },
+  {
+    "id": "23485e1e-18ac-4560-9d06-a0a560c30f0e",
+    "userId": "c66e5321-917a-4261-84ae-110f16107544",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:24:25.938Z"
+  },
+  {
+    "id": "7b333e6f-2ffd-4d5f-aa93-72b1419c60d9",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:24:29.504Z"
+  },
+  {
+    "id": "a1763760-1ebe-4176-b281-c7bcfab224ea",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "refund",
+    "amount": 0.5,
+    "description": "Lobby cancellation refund",
+    "createdAt": "2026-01-05T20:24:30.964Z"
+  },
+  {
+    "id": "dce0e66a-1806-42a0-89ef-bfb178f80d2a",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:24:31.844Z"
+  },
+  {
+    "id": "c801eee7-cbcd-461e-ad26-8062f659c34c",
+    "userId": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "type": "game_fee",
+    "amount": -0.5,
+    "createdAt": "2026-01-05T20:26:02.620Z"
+  }
+]

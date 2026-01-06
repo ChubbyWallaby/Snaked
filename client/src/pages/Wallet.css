@@ -1,0 +1,314 @@
+/* Wallet Page Styles */
+
+.wallet-page {
+    padding: var(--space-xl) 0;
+}
+
+.wallet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-xl);
+    flex-wrap: wrap;
+    gap: var(--space-md);
+}
+
+.wallet-header h1 {
+    font-size: 2.5rem;
+}
+
+.current-balance {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: var(--space-md) var(--space-lg);
+    background: var(--bg-glass);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.current-balance .balance-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.current-balance .balance-value {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.success-message {
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid var(--color-success);
+    color: var(--color-success);
+    padding: var(--space-md);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-lg);
+    text-align: center;
+    animation: slideUp 0.3s ease;
+}
+
+/* Wallet Grid */
+.wallet-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+}
+
+@media (max-width: 900px) {
+    .wallet-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.wallet-section {
+    padding: var(--space-lg);
+}
+
+.wallet-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Deposit Form */
+.deposit-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.amount-selection label,
+.card-input label {
+    display: block;
+    margin-bottom: var(--space-sm);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.amount-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+}
+
+.amount-btn {
+    padding: var(--space-md);
+    background: var(--bg-glass);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.amount-btn:hover {
+    border-color: var(--color-primary);
+}
+
+.amount-btn.active {
+    background: var(--gradient-primary);
+    color: var(--bg-dark);
+    border-color: transparent;
+}
+
+.custom-amount {
+    margin-top: var(--space-sm);
+}
+
+.card-element-wrapper {
+    padding: var(--space-md);
+    background: var(--bg-glass);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-sm);
+}
+
+.deposit-error {
+    background: rgba(255, 68, 68, 0.1);
+    border: 1px solid var(--color-danger);
+    color: var(--color-danger);
+    padding: var(--space-md);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+}
+
+.secure-note {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Transactions */
+.no-transactions {
+    text-align: center;
+    padding: var(--space-xl);
+    color: var(--text-muted);
+}
+
+.no-transactions .hint {
+    font-size: 0.9rem;
+    margin-top: var(--space-sm);
+}
+
+.transaction-list {
+    list-style: none;
+}
+
+.transaction-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
+}
+
+.tx-icon {
+    font-size: 1.5rem;
+}
+
+.tx-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.tx-type {
+    text-transform: capitalize;
+    font-weight: 500;
+}
+
+.tx-date {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.tx-amount {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: var(--space-lg) 0;
+    color: var(--text-muted);
+}
+
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.separator span {
+    padding: 0 var(--space-md);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.test-deposit-box {
+    background: rgba(255, 255, 255, 0.05);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.test-deposit-box h3 {
+    font-size: 1rem;
+    margin-bottom: var(--space-xs);
+    color: var(--text-secondary);
+}
+
+.test-deposit-box p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-md);
+}
+
+.error-hint {
+    font-size: 0.8rem;
+    margin-top: var(--space-xs);
+    opacity: 0.8;
+}
+
+/* Withdrawal Form */
+.withdrawal-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.amount-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.currency-prefix {
+    position: absolute;
+    left: var(--space-md);
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    pointer-events: none;
+}
+
+.amount-input-wrapper .input {
+    padding-left: calc(var(--space-md) + 1ch);
+    width: 100%;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: var(--space-sm);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.input-group .hint {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: var(--space-sm);
+    line-height: 1.4;
+}
+
+.withdraw-error {
+    background: rgba(255, 68, 68, 0.1);
+    border: 1px solid var(--color-danger);
+    color: var(--color-danger);
+    padding: var(--space-md);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+}
+
+.withdraw-section {
+    border-color: rgba(0, 212, 255, 0.3);
+    /* Subtle blue hint for withdraw */
+}
+
+.input-group.locked {
+    opacity: 0.7;
+}
+
+.input-group.locked .input {
+    background: rgba(255, 255, 255, 0.05);
+    cursor: not-allowed;
+}
+
+.onboarding-hint {
+    color: var(--color-primary) !important;
+    font-weight: 500;
+}

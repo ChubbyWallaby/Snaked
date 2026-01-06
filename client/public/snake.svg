@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="snakeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00ff88"/>
+      <stop offset="100%" style="stop-color:#00d4ff"/>
+    </linearGradient>
+  </defs>
+  <!-- Snake body -->
+  <circle cx="75" cy="40" r="8" fill="url(#snakeGrad)"/>
+  <circle cx="62" cy="35" r="9" fill="url(#snakeGrad)"/>
+  <circle cx="48" cy="38" r="10" fill="url(#snakeGrad)"/>
+  <circle cx="35" cy="45" r="11" fill="url(#snakeGrad)"/>
+  <circle cx="25" cy="55" r="12" fill="url(#snakeGrad)"/>
+  <circle cx="20" cy="70" r="11" fill="url(#snakeGrad)"/>
+  <circle cx="25" cy="82" r="10" fill="url(#snakeGrad)"/>
+  <!-- Snake head -->
+  <circle cx="40" cy="85" r="12" fill="url(#snakeGrad)"/>
+  <!-- Eyes -->
+  <circle cx="44" cy="81" r="3" fill="white"/>
+  <circle cx="36" cy="81" r="3" fill="white"/>
+  <circle cx="45" cy="81" r="1.5" fill="#0a0a0f"/>
+  <circle cx="37" cy="81" r="1.5" fill="#0a0a0f"/>
+  <!-- Money symbol -->
+  <text x="70" y="75" font-family="Arial Black" font-size="24" fill="#ffd700" font-weight="bold">$</text>
+</svg>

@@ -1,0 +1,72 @@
+{
+  "c66e5321-917a-4261-84ae-110f16107544": {
+    "id": "c66e5321-917a-4261-84ae-110f16107544",
+    "email": "brunomvaraujo1997@gmail.com",
+    "username": "ChubbyWallaby",
+    "passwordHash": "$2a$10$iubMHx99DQVeu217o7RNd.TgOM0JH7AYtJ8avm3ETiZh2OL7ygvni",
+    "balance": 67.31250000000006,
+    "gamesPlayed": 22,
+    "totalEarnings": 11.362499999999997,
+    "survivalRate": 0,
+    "role": "admin",
+    "createdAt": "2026-01-05T10:14:31.772Z",
+    "stripeAccountId": "acct_1SmJWcHTeeAbvWbY"
+  },
+  "0ae3c674-17d1-4e3c-9b75-011602003420": {
+    "id": "0ae3c674-17d1-4e3c-9b75-011602003420",
+    "email": "test_stripe@example.com",
+    "username": "test_stripe",
+    "passwordHash": "$2a$10$8YSPcbyaI3tnYFHmRC/XVeAgMfU1SmQXzbhkFA6Gr/7jlxAMRyQZq",
+    "balance": 0,
+    "gamesPlayed": 0,
+    "totalEarnings": 0,
+    "survivalRate": 0,
+    "createdAt": "2026-01-05T11:02:09.027Z"
+  },
+  "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098": {
+    "id": "6d5d15b2-0cb4-4ce3-bdd2-0715101f7098",
+    "email": "brunoaraujo61@hotmail.com",
+    "username": "Naked Chinese",
+    "passwordHash": "$2a$10$5vCAQNfc7NwlPMVZ585M6uSqAUfLpqqCDw1LphiQvdDHnTieC1TA6",
+    "balance": 4.974999999999996,
+    "gamesPlayed": 17,
+    "totalEarnings": 0,
+    "survivalRate": 0,
+    "createdAt": "2026-01-05T11:18:14.669Z"
+  },
+  "874c8067-0472-4562-b1be-869aa92b3a0d": {
+    "id": "874c8067-0472-4562-b1be-869aa92b3a0d",
+    "email": "tiagochicopereira@gmail.com",
+    "username": "tpereira",
+    "passwordHash": "$2a$10$zw/41gJ4rGLo.9LgWptnxOcjkMjIKmEybblAjYQzPRLt8lL.7gGry",
+    "balance": 197.5,
+    "gamesPlayed": 6,
+    "totalEarnings": 1.0000000000000002,
+    "survivalRate": 0,
+    "createdAt": "2026-01-05T12:22:25.226Z"
+  },
+  "b1c62dc1-85a3-4de0-87a6-2f5c72414ae6": {
+    "id": "b1c62dc1-85a3-4de0-87a6-2f5c72414ae6",
+    "email": "testwithdraw@example.com",
+    "username": "WithdrawTest",
+    "passwordHash": "$2a$10$EAeaPUzngD4xwqfXd8OysuzOKKIV4G50nJvIUtV5JuhEI.QOg8THO",
+    "balance": 102,
+    "gamesPlayed": 1,
+    "totalEarnings": 0.5,
+    "survivalRate": 0,
+    "createdAt": "2026-01-05T13:56:13.473Z"
+  },
+  "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e": {
+    "id": "3da3190d-1b04-4bb1-a6ee-5f69d0d8df8e",
+    "email": "test@example.com",
+    "username": "testuser",
+    "passwordHash": "$2a$10$uWYMO12GW45v1D8mXsOPceHms0LNMchM1EpoXvz1/6Dr5bpWjKMCK",
+    "balance": 96,
+    "gamesPlayed": 2,
+    "totalEarnings": 0.5,
+    "survivalRate": 0,
+    "createdAt": "2026-01-05T19:01:45.060Z",
+    "stripeAccountId": "acct_test_123",
+    "stripeOnboardingComplete": true
+  }
+}
