@@ -135,6 +135,9 @@ function Game() {
         })
 
         socket.on('gameState', (state) => {
+            // Debug: Log received state (remove in production)
+            console.log(`[GameState] Players: ${Object.keys(state.players).length}, Food: ${state.food?.length || 'cached'}, Leaderboard: ${state.leaderboard?.length || 0}`)
+
             gameStateRef.current.players = new Map(Object.entries(state.players))
 
             // Only update food if server included it (optimization: server only sends when changed)

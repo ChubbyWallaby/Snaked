@@ -337,6 +337,12 @@ export class GameRoom {
                 }
             }
 
+            // Debug: Log broadcast info (remove in production)
+            const playerCount = Object.keys(playersObject).length
+            if (playerCount > 0) {
+                console.log(`[Room ${this.roomId.slice(0, 8)}] Broadcasting ${playerCount} players, ${this.food.length} food, leaderboard: ${this.getLeaderboard().length}`)
+            }
+
             const update = {
                 players: playersObject,
                 moneyOrbs: this.moneyOrbs,
