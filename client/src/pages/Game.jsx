@@ -136,8 +136,17 @@ function Game() {
 
         socket.on('gameState', (state) => {
             gameStateRef.current.players = new Map(Object.entries(state.players))
-            gameStateRef.current.food = state.food
-            gameStateRef.current.moneyOrbs = state.moneyOrbs
+
+            // Only update food if server included it (optimization: server only sends when changed)
+            if (state.food) {
+                gameStateRef.current.food = state.food
+            }
+
+            // Always update money orbs (they change frequently)
+            if (state.moneyOrbs) {
+                gameStateRef.current.moneyOrbs = state.moneyOrbs
+            }
+
             setLeaderboard(state.leaderboard || [])
             setPlayerCount(state.playerCount || 0)
         })

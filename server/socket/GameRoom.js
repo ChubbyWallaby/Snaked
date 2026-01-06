@@ -320,6 +320,7 @@ export class GameRoom {
 
     startGameLoop() {
         this.active = true
+        this.foodChanged = true // Ensure first tick sends food
         this.intervalId = setInterval(() => {
             if (!this.active) return
 
