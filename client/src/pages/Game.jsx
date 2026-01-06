@@ -13,7 +13,7 @@ const INITIAL_SNAKE_LENGTH = 10
 const SEGMENT_RADIUS = 12
 const FOOD_RADIUS = 8
 const BOOST_SPEED_MULTIPLIER = 2
-const NORMAL_SPEED = 5
+const NORMAL_SPEED = 2.5
 
 // Colors
 const SNAKE_COLORS = [
