@@ -27,6 +27,7 @@ function Game() {
     const canvasRef = useRef(null)
     const socketRef = useRef(null)
     const gameLoopRef = useRef(null)
+    const lastFrameTimeRef = useRef(Date.now())
 
     // Game State
     const [gameStatus, setGameStatus] = useState('lobby') // 'lobby', 'waiting', 'playing', 'dead', 'spectating'
@@ -237,9 +238,13 @@ function Game() {
         resizeCanvas()
         window.addEventListener('resize', resizeCanvas)
 
-        // Game loop
+        // Game loop with delta-time for consistent speed
         const gameLoop = () => {
-            update()
+            const now = Date.now()
+            const deltaTime = (now - lastFrameTimeRef.current) / 16.67 // Normalize to 60fps
+            lastFrameTimeRef.current = now
+
+            update(deltaTime)
             render(ctx)
             gameLoopRef.current = requestAnimationFrame(gameLoop)
         }
@@ -315,10 +320,13 @@ function Game() {
         return dx * dx + dy * dy <= radius * radius
     }
 
-    // Update game state
-    const update = () => {
+    // Update game state (deltaTime normalized to 60fps: 1.0 = 60fps, 2.0 = 30fps)
+    const update = (deltaTime = 1) => {
         const player = playerRef.current
         if (!player.alive || gameStatus !== 'playing') return
+
+        // Cap delta to prevent teleporting on lag spikes
+        const clampedDelta = Math.min(deltaTime, 3)
 
         // Smooth direction turning
         const turnSpeed = 0.1
@@ -336,8 +344,8 @@ function Game() {
         if (player.segments.length > 0) {
             const head = player.segments[0]
             const newHead = {
-                x: head.x + player.direction.x * player.speed,
-                y: head.y + player.direction.y * player.speed
+                x: head.x + player.direction.x * player.speed * clampedDelta,
+                y: head.y + player.direction.y * player.speed * clampedDelta
             }
 
             // Boundary checking

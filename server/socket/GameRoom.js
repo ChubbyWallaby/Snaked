@@ -28,6 +28,7 @@ export class GameRoom {
 
     initFood() {
         this.food = []
+        this.foodIdCounter = 0 // Stable incrementing ID
         for (let i = 0; i < FOOD_COUNT; i++) {
             this.spawnFood()
         }
@@ -35,16 +36,42 @@ export class GameRoom {
 
     spawnFood() {
         this.food.push({
-            id: Math.random().toString(36).substr(2, 9),
+            id: `food_${this.foodIdCounter++}`, // Stable incrementing ID
             x: Math.random() * (WORLD_SIZE - 100) + 50,
             y: Math.random() * (WORLD_SIZE - 100) + 50,
             color: SNAKE_COLORS[Math.floor(Math.random() * SNAKE_COLORS.length)]
         })
     }
 
+    isSpawnCollision(x, y) {
+        const SAFE_DISTANCE = 200 // Minimum distance from other snakes
+        for (const player of this.players.values()) {
+            for (const segment of player.segments) {
+                const dx = x - segment.x
+                const dy = y - segment.y
+                if (dx * dx + dy * dy < SAFE_DISTANCE * SAFE_DISTANCE) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
     createSnake(playerId, userId, username) {
-        const startX = WORLD_SIZE / 2 + (Math.random() - 0.5) * 1000
-        const startY = WORLD_SIZE / 2 + (Math.random() - 0.5) * 1000
+        let attempts = 0
+        let startX, startY
+
+        // Find a safe spawn location
+        do {
+            startX = WORLD_SIZE / 2 + (Math.random() - 0.5) * 2000
+            startY = WORLD_SIZE / 2 + (Math.random() - 0.5) * 2000
+            attempts++
+        } while (this.isSpawnCollision(startX, startY) && attempts < 20)
+
+        if (attempts >= 20) {
+            console.log(`Warning: Could not find safe spawn for ${username} after 20 attempts`)
+        }
+
         const colorIndex = Math.floor(Math.random() * SNAKE_COLORS.length)
 
         const segments = []
@@ -144,6 +171,11 @@ export class GameRoom {
             moneyOrbs: orbs,
             disconnected
         })
+
+        // Remove player from Map after brief delay (allows death animation)
+        setTimeout(() => {
+            this.players.delete(player.id)
+        }, 2000)
     }
 
     pointInCircle(px, py, cx, cy, radius) {

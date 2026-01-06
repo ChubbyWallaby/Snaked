@@ -103,15 +103,13 @@ export class LobbyManager {
             socket.leave('lobby')
             this.waitingPlayers.delete(socketId)
 
-            // Refund the user asynchronously
-            this.refundUser(user.id).catch(err => console.error(`Failed to refund user ${user.id}:`, err))
+            console.log(`Player ${user.username} left lobby (no fee charged yet)`)
 
-            // Stop timer if empty or only 1 player (if that's the rule, but usually we just stop if empty)
+            // Stop timer if empty or only 1 player
             if (this.waitingPlayers.size === 0) {
                 this.stopTimer()
             } else if (this.waitingPlayers.size === 1 && this.timer) {
-                // "If there is only 1 player... timer starts again"
-                // Let's reset the timer to full 60s
+                // Reset timer if only 1 player left
                 this.stopTimer()
                 this.startTimer()
             }
@@ -119,30 +117,6 @@ export class LobbyManager {
             this.broadcastLobbyState()
         }
     }
-
-    async refundUser(userId) {
-        try {
-            const user = await getUser(userId)
-            if (user) {
-                const newBalance = user.balance + GAME_FEE
-                await updateUser(userId, { balance: newBalance })
-
-                await addTransaction({
-                    id: uuidv4(),
-                    userId: userId,
-                    type: 'refund',
-                    amount: GAME_FEE,
-                    description: 'Lobby cancellation refund',
-                    createdAt: new Date().toISOString()
-                })
-
-                console.log(`Refunded $${GAME_FEE} to user ${userId} (Lobby Leave)`)
-            }
-        } catch (err) {
-            console.error('Refund error:', err)
-        }
-    }
-
 
 
     startTimer() {
@@ -182,7 +156,37 @@ export class LobbyManager {
 
     // --- Game Creation ---
 
-    startGame() {
+    async deductFee(userId) {
+        try {
+            const user = await getUser(userId)
+            if (!user) return false
+
+            if (user.balance < GAME_FEE) {
+                console.log(`User ${userId} has insufficient balance for game`)
+                return false
+            }
+
+            const newBalance = user.balance - GAME_FEE
+            await updateUser(userId, { balance: newBalance })
+
+            await addTransaction({
+                id: uuidv4(),
+                userId: userId,
+                type: 'game_fee',
+                amount: -GAME_FEE,
+                description: 'Game entry fee',
+                createdAt: new Date().toISOString()
+            })
+
+            console.log(`Deducted $${GAME_FEE} from user ${userId}`)
+            return true
+        } catch (err) {
+            console.error('Fee deduction error:', err)
+            return false
+        }
+    }
+
+    async startGame() {
         this.stopTimer()
 
         if (this.waitingPlayers.size === 0) return
@@ -192,8 +196,30 @@ export class LobbyManager {
 
         console.log(`Starting Game ${roomId} with ${this.waitingPlayers.size} players`)
 
-        // Move players from Lobby to Game
+        // Deduct fees and move players from Lobby to Game
+        const playersToAdd = []
+
         for (const [socketId, { socket, user }] of this.waitingPlayers) {
+            // Deduct fee now that game is actually starting
+            const success = await this.deductFee(user.id)
+
+            if (success) {
+                playersToAdd.push({ socketId, socket, user })
+            } else {
+                // Kick player who can't pay (rare edge case)
+                socket.emit('error', { message: 'Insufficient balance to start game' })
+                socket.leave('lobby')
+            }
+        }
+
+        // If everyone failed to pay somehow, abort
+        if (playersToAdd.length === 0) {
+            console.log('No players could pay - game aborted')
+            return
+        }
+
+        // Add paying players to game
+        for (const { socketId, socket, user } of playersToAdd) {
             socket.leave('lobby')
             socket.join(roomId)
 

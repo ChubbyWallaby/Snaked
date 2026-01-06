@@ -8,7 +8,7 @@ const router = express.Router()
 const GAME_FEE = parseFloat(process.env.GAME_FEE) || 0.5
 const MIN_PLAY_TIME_MINUTES = parseInt(process.env.MIN_PLAY_TIME_MINUTES) || 10
 
-// Join game (deduct entry fee)
+// Join game (check balance - fee deducted when game actually starts)
 router.post('/join', authenticateToken, async (req, res) => {
     try {
         const user = await getUser(req.user.id)
@@ -19,24 +19,11 @@ router.post('/join', authenticateToken, async (req, res) => {
 
         if (user.balance < GAME_FEE) {
             return res.status(400).json({
-                message: `Insufficient balance. Need $${GAME_FEE.toFixed(3)} to play.`
+                message: `Insufficient balance. Need $${GAME_FEE.toFixed(2)} to play.`
             })
         }
 
-        // Deduct game fee
-        const newBalance = user.balance - GAME_FEE
-        await updateUser(req.user.id, { balance: newBalance })
-
-        // Record transaction
-        await addTransaction({
-            id: uuidv4(),
-            userId: req.user.id,
-            type: 'game_fee',
-            amount: -GAME_FEE,
-            createdAt: new Date().toISOString()
-        })
-
-        // Create game session
+        // Create game session (fee will be deducted when game starts)
         const sessionId = uuidv4()
         await addGameSession({
             id: sessionId,
@@ -44,13 +31,14 @@ router.post('/join', authenticateToken, async (req, res) => {
             startedAt: new Date().toISOString(),
             entryFee: GAME_FEE,
             moneyCollected: 0,
-            moneyLost: 0
+            moneyLost: 0,
+            feeDeducted: false // Track if fee was actually charged
         })
 
         res.json({
             success: true,
             sessionId,
-            newBalance,
+            balance: user.balance, // Return current balance (unchanged)
             entryFee: GAME_FEE
         })
     } catch (err) {
