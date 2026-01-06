@@ -119,11 +119,17 @@ function Game() {
             setGameStatus('playing')
             setGameStartTime(Date.now())
 
+            // Clear stale data from previous games
+            gameStateRef.current.players = new Map()
+            gameStateRef.current.food = []
+            gameStateRef.current.moneyOrbs = []
+
             // Initialize local player with server data
             if (player) {
                 playerRef.current.id = player.id
                 playerRef.current.segments = player.segments
                 playerRef.current.color = player.color
+                playerRef.current.alive = true
                 setSnakeLength(player.segments.length)
             }
         })
@@ -145,7 +151,10 @@ function Game() {
         })
 
         socket.on('playerDied', (data) => {
-            if (data.playerId === playerRef.current.id) {
+            // Remove dead player from local state (prevents ghost snakes)
+            if (data.playerId !== playerRef.current.id) {
+                gameStateRef.current.players.delete(data.playerId)
+            } else {
                 handleDeath(data)
             }
             // Add money orbs where player died
@@ -498,9 +507,10 @@ function Game() {
             }
         })
 
-        // Draw other players
+        // Draw other players (skip local player and dead players)
         gameStateRef.current.players.forEach((otherPlayer, id) => {
             if (id === playerRef.current.id) return
+            if (otherPlayer.alive === false) return // Skip dead players
 
             otherPlayer.segments?.forEach((segment, i) => {
                 const screenX = segment.x - camera.x

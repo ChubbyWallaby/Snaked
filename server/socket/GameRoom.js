@@ -291,7 +291,8 @@ export class GameRoom {
                         id: player.id,
                         username: player.username,
                         segments: player.segments,
-                        color: player.color
+                        color: player.color,
+                        alive: player.alive // Include for client-side safety check
                     }
                 }
             }
