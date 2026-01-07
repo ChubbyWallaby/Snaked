@@ -24,14 +24,15 @@ export class AdService {
             return Promise.resolve(true)
         }
 
-        // TODO: Implement real Google AdMob/AdSense integration
-        // Example:
-        // return new Promise((resolve, reject) => {
-        //     googletag.cmd.push(() => {
-        //         googletag.display(this.adUnitId)
-        //         resolve(true)
-        //     })
-        // })
+        if (typeof googletag !== 'undefined') {
+            return new Promise((resolve) => {
+                googletag.cmd.push(() => {
+                    googletag.display(this.adUnitId)
+                    this.isAdLoaded = true
+                    resolve(true)
+                })
+            })
+        }
 
         this.isAdLoaded = true
         return Promise.resolve(true)
@@ -62,14 +63,17 @@ export class AdService {
                 }, 3000)
             } else {
                 // TODO: Implement real ad showing
-                // Example:
-                // rewardedAd.show()
-                //     .then((reward) => {
-                //         resolve({ estimatedRevenue: reward.amount })
-                //     })
-                //     .catch((error) => {
-                //         reject(new Error('Ad failed to show'))
-                //     })
+                if (this.rewardedAd) {
+                    this.rewardedAd.show()
+                        .then((reward) => {
+                            this.isAdLoaded = false
+                            resolve({ estimatedRevenue: reward.amount })
+                        })
+                        .catch((error) => {
+                            reject(new Error('Ad failed to show'))
+                        })
+                    return
+                }
 
                 // Fallback mock for now
                 setTimeout(() => {
