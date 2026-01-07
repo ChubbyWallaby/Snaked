@@ -502,6 +502,13 @@ function Game() {
                 ctx.shadowColor = '#ffd700'
                 ctx.fill()
                 ctx.shadowBlur = 0
+
+                // $ symbol to distinguish from food
+                ctx.fillStyle = '#000'
+                ctx.font = 'bold 10px Arial'
+                ctx.textAlign = 'center'
+                ctx.textBaseline = 'middle'
+                ctx.fillText('$', screenX, screenY)
             }
         })
 
@@ -755,7 +762,7 @@ function Game() {
                                     }}
                                     data-ad-client="ca-pub-1605283228311039"
                                     data-ad-slot="7444639423"
-                                    data-ad-format="horizontal"
+                                    data-ad-format="auto"
                                     data-adtest="on"
                                     data-full-width-responsive="false"></ins>
                             </div>
