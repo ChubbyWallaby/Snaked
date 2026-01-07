@@ -635,18 +635,27 @@ function Game() {
         }
     }, [gameStatus])
 
+
     // Load Google ads when ad watching screen appears
     useEffect(() => {
         if (gameStatus === 'watchingAd') {
+            console.log('[Google Ads] Ad watching screen appeared, loading ad...')
+
             try {
                 // Small delay to ensure DOM is ready
                 setTimeout(() => {
+                    console.log('[Google Ads] Attempting to load ad...')
+                    console.log('[Google Ads] window.adsbygoogle exists:', !!window.adsbygoogle)
+
                     if (window.adsbygoogle) {
                         (window.adsbygoogle = window.adsbygoogle || []).push({})
+                        console.log('[Google Ads] Ad push successful!')
+                    } else {
+                        console.warn('[Google Ads] adsbygoogle not found on window')
                     }
                 }, 100)
             } catch (err) {
-                console.error('Error loading Google ad:', err)
+                console.error('[Google Ads] Error loading ad:', err)
             }
         }
     }, [gameStatus])
