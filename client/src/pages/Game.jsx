@@ -635,6 +635,22 @@ function Game() {
         }
     }, [gameStatus])
 
+    // Load Google ads when ad watching screen appears
+    useEffect(() => {
+        if (gameStatus === 'watchingAd') {
+            try {
+                // Small delay to ensure DOM is ready
+                setTimeout(() => {
+                    if (window.adsbygoogle) {
+                        (window.adsbygoogle = window.adsbygoogle || []).push({})
+                    }
+                }, 100)
+            } catch (err) {
+                console.error('Error loading Google ad:', err)
+            }
+        }
+    }, [gameStatus])
+
     return (
         <div className="game-page">
             {gameStatus === 'lobby' && (
@@ -649,7 +665,7 @@ function Game() {
                             </div>
                             <div className="info-item">
                                 <span className="info-label">Min. Play Time</span>
-                                <span className="info-value">10 minutes</span>
+                                <span className="info-value">3 minutes</span>
                             </div>
                         </div>
 
@@ -657,9 +673,9 @@ function Game() {
                             <h3>Rules</h3>
                             <ul>
                                 <li>Move with your mouse, click to boost</li>
-                                <li>Eat food and money orbs to grow</li>
+                                <li>Eat food and points orbs to grow</li>
                                 <li>Avoid crashing into other snakes</li>
-                                <li>Play for 10+ minutes to keep your earnings</li>
+                                <li>Play for 3+ minutes to keep your earnings</li>
                             </ul>
                         </div>
 
@@ -672,6 +688,71 @@ function Game() {
                             >
                                 🎮 Watch Ad & Play
                             </button>
+                            <button
+                                className="btn btn-secondary"
+                                onClick={() => navigate('/dashboard')}
+                            >
+                                Back to Dashboard
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {gameStatus === 'watchingAd' && (
+                <div className="game-lobby">
+                    <div className="lobby-content card" style={{ textAlign: 'center' }}>
+                        <h1>📺 Watch Ad to Play</h1>
+
+                        <div style={{ margin: '30px 0' }}>
+                            <div style={{ fontSize: '1.2rem', marginBottom: '20px', color: '#888' }}>
+                                Please watch this short ad to enter the game...
+                            </div>
+
+                            {/* Google AdSense Test Ad */}
+                            <div style={{
+                                maxWidth: '600px',
+                                margin: '20px auto',
+                                minHeight: '250px',
+                                backgroundColor: '#1a1a1f',
+                                borderRadius: '8px',
+                                padding: '20px'
+                            }}>
+                                <ins className="adsbygoogle"
+                                    style={{ display: 'block' }}
+                                    data-ad-client="ca-pub-1605283228311039"
+                                    data-ad-slot="7444639423"
+                                    data-ad-format="auto"
+                                    data-adtest="on"
+                                    data-full-width-responsive="true"></ins>
+                            </div>
+
+                            <div style={{
+                                width: '100%',
+                                maxWidth: '400px',
+                                height: '8px',
+                                backgroundColor: '#333',
+                                borderRadius: '4px',
+                                overflow: 'hidden',
+                                margin: '20px auto'
+                            }}>
+                                <div style={{
+                                    width: `${adProgress}%`,
+                                    height: '100%',
+                                    backgroundColor: '#00ff88',
+                                    transition: 'width 0.3s ease'
+                                }} />
+                            </div>
+
+                            <div style={{ marginTop: '10px', color: '#888', fontSize: '0.9rem' }}>
+                                {adProgress}% complete
+                            </div>
+                        </div>
+
+                        <p style={{ color: '#666', fontSize: '0.9rem' }}>
+                            💡 This ad supports free-to-play gameplay
+                        </p>
+                        <div className="lobby-actions">
                             <button
                                 className="btn btn-secondary"
                                 onClick={() => navigate('/dashboard')}
