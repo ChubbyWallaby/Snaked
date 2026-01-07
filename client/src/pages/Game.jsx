@@ -720,20 +720,44 @@ function Game() {
 
                             {/* Google AdSense Test Ad */}
                             <div style={{
-                                maxWidth: '600px',
+                                maxWidth: '728px',
+                                width: '100%',
                                 margin: '20px auto',
-                                minHeight: '250px',
-                                backgroundColor: '#1a1a1f',
+                                minHeight: '90px',
+                                backgroundColor: '#2a2a2f',
                                 borderRadius: '8px',
-                                padding: '20px'
+                                padding: '10px',
+                                border: '2px dashed #444',
+                                position: 'relative'
                             }}>
+                                {/* Placeholder text that will be hidden when ad loads */}
+                                <div style={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    left: '50%',
+                                    transform: 'translate(-50%, -50%)',
+                                    color: '#666',
+                                    fontSize: '14px',
+                                    textAlign: 'center',
+                                    pointerEvents: 'none',
+                                    zIndex: 0
+                                }}>
+                                    Ad loading...
+                                </div>
+
                                 <ins className="adsbygoogle"
-                                    style={{ display: 'block' }}
+                                    style={{
+                                        display: 'block',
+                                        width: '100%',
+                                        height: '90px',
+                                        position: 'relative',
+                                        zIndex: 1
+                                    }}
                                     data-ad-client="ca-pub-1605283228311039"
                                     data-ad-slot="7444639423"
-                                    data-ad-format="auto"
-                                    data-adbreak-test="on"
-                                    data-full-width-responsive="true"></ins>
+                                    data-ad-format="horizontal"
+                                    data-adtest="on"
+                                    data-full-width-responsive="false"></ins>
                             </div>
 
                             <div style={{
