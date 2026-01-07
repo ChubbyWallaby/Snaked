@@ -723,7 +723,7 @@ function Game() {
                                     data-ad-client="ca-pub-1605283228311039"
                                     data-ad-slot="7444639423"
                                     data-ad-format="auto"
-                                    data-adtest="on"
+                                    data-adbreak-test="on"
                                     data-full-width-responsive="true"></ins>
                             </div>
 
