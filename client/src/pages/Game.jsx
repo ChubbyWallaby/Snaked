@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { io } from 'socket.io-client'
 import axios from 'axios'
+import { adService } from '../services/AdService'
 import './Game.css'
 
 // Game Constants
-const GAME_FEE = 0.5
 const MIN_PLAY_TIME = 3 * 60 * 1000 // 3 minutes in milliseconds
 const WORLD_SIZE = 4000
 const INITIAL_SNAKE_LENGTH = 10
@@ -30,7 +30,7 @@ function Game() {
     const lastFrameTimeRef = useRef(Date.now())
 
     // Game State
-    const [gameStatus, setGameStatus] = useState('lobby') // 'lobby', 'waiting', 'playing', 'dead', 'spectating'
+    const [gameStatus, setGameStatus] = useState('lobby') // 'lobby', 'watchingAd', 'playing', 'dead', 'spectating'
     const [gameStartTime, setGameStartTime] = useState(null)
     const [playTime, setPlayTime] = useState(0)
     const [inGameBalance, setInGameBalance] = useState(0)
@@ -39,11 +39,7 @@ function Game() {
     const [playerCount, setPlayerCount] = useState(0)
     const [error, setError] = useState('')
     const [snakeLength, setSnakeLength] = useState(INITIAL_SNAKE_LENGTH)
-
-    // Lobby State
-    const [lobbyPlayers, setLobbyPlayers] = useState(0)
-    const [lobbyMaxPlayers, setLobbyMaxPlayers] = useState(50)
-    const [lobbyTimeLeft, setLobbyTimeLeft] = useState(60)
+    const [adProgress, setAdProgress] = useState(0)
 
     // Player State (local for rendering)
     const playerRef = useRef({
@@ -55,7 +51,6 @@ function Game() {
         color: SNAKE_COLORS[0],
         boosting: false,
         boostTick: 0,
-        money: GAME_FEE,
         alive: true
     })
 
@@ -70,27 +65,32 @@ function Game() {
     // Mouse position
     const mouseRef = useRef({ x: 0, y: 0 })
 
-    // Initialize game
+    // Initialize game - Watch ad then join
     const startGame = async () => {
-        if ((user?.balance || 0) < GAME_FEE) {
-            setError('Insufficient balance to play')
-            return
-        }
-
         try {
-            // Deduct game fee
-            await axios.post('/api/game/join')
-            await refreshBalance()
+            setError('')
+            setGameStatus('watchingAd')
+            setAdProgress(0)
 
-            setGameStatus('waiting')
-            setCollectedMoney(0)
-            setInGameBalance(GAME_FEE)
+            // Simulate ad progress
+            const progressInterval = setInterval(() => {
+                setAdProgress(prev => Math.min(prev + 33, 100))
+            }, 1000)
 
-            // Connect to game server and join lobby queue
+            // Show ad and get revenue
+            const { estimatedRevenue } = await adService.showRewardedAd()
+            clearInterval(progressInterval)
+            setAdProgress(100)
+
+            // Connect to server and join game with ad revenue
             const socket = connectToServer()
-            socket.emit('joinLobby')
+            socket.emit('joinGame', { adRevenue: estimatedRevenue })
+
+            setCollectedMoney(0)
+            setInGameBalance(0)
         } catch (err) {
-            setError(err.response?.data?.message || 'Failed to join game')
+            setGameStatus('lobby')
+            setError(err.message || 'Failed to load ad. Please try again.')
         }
     }
 
@@ -107,12 +107,6 @@ function Game() {
 
         socket.on('connect', () => {
             console.log('Connected to game server')
-        })
-
-        socket.on('lobbyUpdate', (data) => {
-            setLobbyPlayers(data.players)
-            setLobbyMaxPlayers(data.maxPlayers)
-            setLobbyTimeLeft(data.timeLeft)
         })
 
         socket.on('gameStart', ({ roomId, player }) => {
@@ -190,7 +184,6 @@ function Game() {
             playerRef.current.id = data.playerId
             playerRef.current.color = SNAKE_COLORS[data.colorIndex || 0]
             playerRef.current.segments = data.segments
-            playerRef.current.money = GAME_FEE
         })
 
         socket.on('disconnect', () => {
@@ -222,7 +215,7 @@ function Game() {
         if (canKeepMoney && gameStatus === 'playing') {
             try {
                 await axios.post('/api/game/end', {
-                    earnings: collectedMoney + inGameBalance,
+                    earnings: collectedMoney,
                     survived: true
                 })
                 await refreshBalance()
@@ -509,13 +502,6 @@ function Game() {
                 ctx.shadowColor = '#ffd700'
                 ctx.fill()
                 ctx.shadowBlur = 0
-
-                // $ symbol
-                ctx.fillStyle = '#000'
-                ctx.font = 'bold 10px Arial'
-                ctx.textAlign = 'center'
-                ctx.textBaseline = 'middle'
-                ctx.fillText('$', screenX, screenY)
             }
         })
 
@@ -534,6 +520,25 @@ function Game() {
                     ctx.arc(screenX, screenY, Math.max(3, SEGMENT_RADIUS - i * 0.1), 0, Math.PI * 2)
                     ctx.fillStyle = otherPlayer.color || '#ff00aa'
                     ctx.fill()
+
+                    // Draw label above head
+                    if (i === 0) {
+                        ctx.font = 'bold 14px Arial'
+                        ctx.textAlign = 'center'
+                        ctx.fillStyle = '#fff'
+                        ctx.strokeStyle = '#000'
+                        ctx.lineWidth = 3
+
+                        // Player name
+                        ctx.strokeText(otherPlayer.username || 'Player', screenX, screenY - 30)
+                        ctx.fillText(otherPlayer.username || 'Player', screenX, screenY - 30)
+
+                        // Points
+                        ctx.font = '12px Arial'
+                        const points = Math.floor(otherPlayer.points || 0)
+                        ctx.strokeText(`${points} pts`, screenX, screenY - 45)
+                        ctx.fillText(`${points} pts`, screenX, screenY - 45)
+                    }
                 }
             })
         })
@@ -569,6 +574,24 @@ function Game() {
                     screenY + player.direction.y * eyeOffset - player.direction.x * 4,
                     eyeRadius, 0, Math.PI * 2)
                 ctx.fill()
+
+                // Draw player label
+                ctx.font = 'bold 14px Arial'
+                ctx.textAlign = 'center'
+                ctx.fillStyle = '#fff'
+                ctx.strokeStyle = '#000'
+                ctx.lineWidth = 3
+
+                // Player name (get from user context)
+                const username = user?.username || 'You'
+                ctx.strokeText(username, screenX, screenY - 30)
+                ctx.fillText(username, screenX, screenY - 30)
+
+                // Points
+                ctx.font = '12px Arial'
+                const points = Math.floor(collectedMoney + inGameBalance)
+                ctx.strokeText(`${points} pts`, screenX, screenY - 45)
+                ctx.fillText(`${points} pts`, screenX, screenY - 45)
             }
         })
 
@@ -621,12 +644,8 @@ function Game() {
 
                         <div className="game-info">
                             <div className="info-item">
-                                <span className="info-label">Entry Fee</span>
-                                <span className="info-value money">-${GAME_FEE.toFixed(3)}</span>
-                            </div>
-                            <div className="info-item">
-                                <span className="info-label">Your Balance</span>
-                                <span className="info-value money">${(user?.balance || 0).toFixed(2)}</span>
+                                <span className="info-label">Entry</span>
+                                <span className="info-value">Watch Ad (Free)</span>
                             </div>
                             <div className="info-item">
                                 <span className="info-label">Min. Play Time</span>
@@ -650,9 +669,8 @@ function Game() {
                             <button
                                 className="btn btn-primary btn-lg"
                                 onClick={startGame}
-                                disabled={(user?.balance || 0) < GAME_FEE}
                             >
-                                🎮 Start Game (-${GAME_FEE.toFixed(3)})
+                                🎮 Watch Ad & Play
                             </button>
                             <button
                                 className="btn btn-secondary"
@@ -661,39 +679,6 @@ function Game() {
                                 Back to Dashboard
                             </button>
                         </div>
-                    </div>
-                </div>
-            )}
-
-            {gameStatus === 'waiting' && (
-                <div className="game-lobby">
-                    <div className="lobby-content card" style={{ textAlign: 'center' }}>
-                        <h1>⏳ Waiting for Players...</h1>
-
-                        <div className="lobby-timer" style={{ fontSize: '3rem', margin: '20px 0', color: lobbyTimeLeft < 10 ? '#ff4444' : '#fff' }}>
-                            {lobbyTimeLeft}s
-                        </div>
-
-                        <div className="lobby-stats" style={{ marginBottom: '30px' }}>
-                            <div style={{ fontSize: '1.5rem', marginBottom: '10px' }}>
-                                Players in Queue: <span style={{ color: '#00ff88' }}>{lobbyPlayers}</span> / {lobbyMaxPlayers}
-                            </div>
-                            {lobbyPlayers === 1 ? (
-                                <p style={{ color: '#888' }}>Waiting for at least one more player to start...</p>
-                            ) : (
-                                <p style={{ color: '#888' }}>Game starting soon!</p>
-                            )}
-                        </div>
-
-                        <button
-                            className="btn btn-danger"
-                            onClick={() => {
-                                if (socketRef.current) socketRef.current.disconnect()
-                                setGameStatus('lobby')
-                            }}
-                        >
-                            Cancel & Leave
-                        </button>
                     </div>
                 </div>
             )}
@@ -719,12 +704,12 @@ function Game() {
 
                             <div className="hud-item balance">
                                 <span className="hud-label">In-Game Balance</span>
-                                <span className="hud-value money">${inGameBalance.toFixed(3)}</span>
+                                <span className="hud-value money">{Math.floor(inGameBalance)} pts</span>
                             </div>
 
                             <div className="hud-item collected">
                                 <span className="hud-label">Collected</span>
-                                <span className="hud-value money-positive">+${collectedMoney.toFixed(3)}</span>
+                                <span className="hud-value money-positive">+{Math.floor(collectedMoney)} pts</span>
                             </div>
 
                             <div className="hud-item length">
@@ -776,7 +761,7 @@ function Game() {
                             </div>
                             <div className="death-stat">
                                 <span className="stat-label">Money Collected</span>
-                                <span className="stat-value money">${collectedMoney.toFixed(3)}</span>
+                                <span className="stat-value money">{Math.floor(collectedMoney)} pts</span>
                             </div>
                             <div className="death-stat">
                                 <span className="stat-label">Status</span>

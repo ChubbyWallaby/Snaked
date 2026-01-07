@@ -77,13 +77,10 @@ router.post('/register', geoBlockMiddleware, async (req, res) => {
                 id: user.id,
                 email: user.email,
                 username: user.username,
-                balance: user.balance,
                 gamesPlayed: user.gamesPlayed,
                 totalEarnings: user.totalEarnings,
                 survivalRate: user.survivalRate,
-                role: user.role,
-                stripeAccountId: user.stripeAccountId,
-                stripeOnboardingComplete: user.stripeOnboardingComplete
+                role: user.role
             }
         })
     } catch (err) {
@@ -126,13 +123,10 @@ router.post('/login', geoBlockMiddleware, async (req, res) => {
                 id: user.id,
                 email: user.email,
                 username: user.username,
-                balance: user.balance,
                 gamesPlayed: user.gamesPlayed,
                 totalEarnings: user.totalEarnings,
                 survivalRate: user.survivalRate,
-                role: user.role,
-                stripeAccountId: user.stripeAccountId,
-                stripeOnboardingComplete: user.stripeOnboardingComplete
+                role: user.role
             }
         })
     } catch (err) {
@@ -164,13 +158,10 @@ router.get('/me', async (req, res) => {
                 id: user.id,
                 email: user.email,
                 username: user.username,
-                balance: user.balance,
                 gamesPlayed: user.gamesPlayed,
                 totalEarnings: user.totalEarnings,
                 survivalRate: user.survivalRate,
-                role: user.role,
-                stripeAccountId: user.stripeAccountId,
-                stripeOnboardingComplete: user.stripeOnboardingComplete
+                role: user.role
             }
         })
     } catch (err) {

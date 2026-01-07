@@ -6,7 +6,6 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import Game from './pages/Game'
-import Wallet from './pages/Wallet'
 import Admin from './pages/Admin'
 import TermsOfService from './pages/TermsOfService'
 import './styles/App.css'
@@ -49,14 +48,6 @@ function App() {
                         element={
                             <PrivateRoute>
                                 <Game />
-                            </PrivateRoute>
-                        }
-                    />
-                    <Route
-                        path="/wallet"
-                        element={
-                            <PrivateRoute>
-                                <Wallet />
                             </PrivateRoute>
                         }
                     />

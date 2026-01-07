@@ -5,7 +5,6 @@ import { Server } from 'socket.io'
 import dotenv from 'dotenv'
 
 import authRoutes from './routes/auth.js'
-import walletRoutes from './routes/wallet.js'
 import gameRoutes from './routes/game.js'
 import adminRoutes from './routes/admin.js'
 import { setupGameSocket } from './socket/gameHandler.js'
@@ -56,7 +55,6 @@ app.set('trust proxy', true)
 
 // Routes
 app.use('/api/auth', authRoutes)
-app.use('/api/wallet', walletRoutes)
 app.use('/api/game', gameRoutes)
 app.use('/api/admin', adminRoutes)
 
@@ -79,8 +77,6 @@ const PORT = process.env.PORT || 3001
 async function start() {
     try {
         await initDatabase()
-
-        console.log('Stripe Key Configured:', process.env.STRIPE_SECRET_KEY ? 'YES (' + process.env.STRIPE_SECRET_KEY.substring(0, 8) + '...)' : 'NO')
 
         server.listen(PORT, () => {
             console.log(`🐍 Snaked! server running on port ${PORT}`)

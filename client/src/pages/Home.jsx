@@ -29,7 +29,7 @@ function Home() {
 
                     <div className="hero-stats">
                         <div className="stat-item">
-                            <span className="stat-value">$10K+</span>
+                            <span className="stat-value">10K+ pts</span>
                             <span className="stat-label">Daily Prize Pool</span>
                         </div>
                         <div className="stat-item">
@@ -37,7 +37,7 @@ function Home() {
                             <span className="stat-label">Active Players</span>
                         </div>
                         <div className="stat-item">
-                            <span className="stat-value">$0.005</span>
+                            <span className="stat-value">50 pts</span>
                             <span className="stat-label">Per Game</span>
                         </div>
                     </div>
@@ -77,7 +77,7 @@ function Home() {
                         <div className="step-number">02</div>
                         <div className="step-icon">🎮</div>
                         <h3>Play</h3>
-                        <p>Join a game for just $0.005. Control your snake and eat food to grow bigger.</p>
+                        <p>Join a game for just 50 pts. Control your snake and eat food to grow bigger.</p>
                     </div>
 
                     <div className="step-card card">

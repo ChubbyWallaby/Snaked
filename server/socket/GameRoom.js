@@ -3,7 +3,6 @@ const WORLD_SIZE = 4000
 const FOOD_COUNT = 300
 const FOOD_RADIUS = 8
 const SEGMENT_RADIUS = 12
-const GAME_FEE = parseFloat(process.env.GAME_FEE) || 0.5
 const INITIAL_SNAKE_LENGTH = 10
 const MAX_SPEED = 15 // Normal is ~5, boost is ~10. Allow buffer.
 
@@ -45,6 +44,28 @@ export class GameRoom {
             color: SNAKE_COLORS[Math.floor(Math.random() * SNAKE_COLORS.length)]
         })
         this.foodChanged = true
+    }
+
+    /**
+     * Spawn point orbs from ad revenue
+     * Points are distributed randomly across the game world
+     * @param {number} points - Total points to spawn (e.g., 100 for €0.01)
+     */
+    spawnPointsOrbs(points) {
+        // Convert points to orbs (each orb = ~10 points for easier collection)
+        const orbCount = Math.ceil(points / 10)
+        const pointsPerOrb = points / orbCount
+
+        console.log(`Spawning ${orbCount} orbs with ${pointsPerOrb.toFixed(1)} points each (total: ${points} points)`)
+
+        for (let i = 0; i < orbCount; i++) {
+            this.moneyOrbs.push({
+                id: Math.random().toString(36).substr(2, 9),
+                x: Math.random() * (WORLD_SIZE - 100) + 50,
+                y: Math.random() * (WORLD_SIZE - 100) + 50,
+                value: pointsPerOrb / 10000 // Convert back to currency for compatibility
+            })
+        }
     }
 
     isSpawnCollision(x, y) {
@@ -94,7 +115,7 @@ export class GameRoom {
             direction: { x: 1, y: 0 },
             color: SNAKE_COLORS[colorIndex],
             colorIndex,
-            money: GAME_FEE, // Initial value = Entry Fee
+            money: 0, // Initial money is 0, players collect from ad-spawned orbs
             alive: true,
             joinedAt: Date.now(),
             lastMoveTime: Date.now()
@@ -182,14 +203,26 @@ export class GameRoom {
     handlePlayerDeath(player, killerId, disconnected = false) {
         player.alive = false
 
-        // Drop money orbs
-        const orbs = this.dropMoneyOrbs(player)
-        this.moneyOrbs.push(...orbs)
+        // New death distribution: 50% local, 30% random, 20% lost
+        const totalPoints = player.money
+        const localDrop = totalPoints * 0.50
+        const randomDrop = totalPoints * 0.30
+        // 20% lost forever (economy sink)
+
+        // Drop 50% at death location
+        const localOrbs = this.dropMoneyOrbs(player, localDrop)
+        this.moneyOrbs.push(...localOrbs)
+
+        // Spawn 30% randomly across the map
+        const randomOrbs = this.spawnOrbsRandom(randomDrop)
+        this.moneyOrbs.push(...randomOrbs)
+
+        const allOrbs = [...localOrbs, ...randomOrbs]
 
         this.io.to(this.roomId).emit('playerDied', {
             playerId: player.id,
             killedBy: killerId,
-            moneyOrbs: orbs,
+            moneyOrbs: allOrbs,
             disconnected
         })
 
@@ -274,13 +307,16 @@ export class GameRoom {
         })
     }
 
-    dropMoneyOrbs(player) {
+    dropMoneyOrbs(player, amount) {
         const orbs = []
-        // Don't drop infinite money, cap it reasonable or based on what they had
-        // For now, let's say they drop what they collected + entry fee? 
-        // Logic from original file:
-        const orbCount = Math.min(20, Math.ceil(player.money / 0.001))
-        const moneyPerOrb = player.money / orbCount // Distribute their wealth
+        // Use provided amount or default to all player money
+        const totalMoney = amount !== undefined ? amount : player.money
+
+        if (totalMoney <= 0) return orbs
+
+        // Create orbs at player's death location
+        const orbCount = Math.min(20, Math.ceil(totalMoney / 0.001))
+        const moneyPerOrb = totalMoney / orbCount
 
         for (let i = 0; i < Math.min(orbCount, player.segments.length); i++) {
             const segment = player.segments[Math.min(i * 2, player.segments.length - 1)]
@@ -288,6 +324,26 @@ export class GameRoom {
                 id: Math.random().toString(36).substr(2, 9),
                 x: segment.x + (Math.random() - 0.5) * 30,
                 y: segment.y + (Math.random() - 0.5) * 30,
+                value: moneyPerOrb
+            })
+        }
+        return orbs
+    }
+
+    spawnOrbsRandom(amount) {
+        const orbs = []
+
+        if (amount <= 0) return orbs
+
+        // Spawn orbs randomly across the map
+        const orbCount = Math.min(15, Math.ceil(amount / 0.001))
+        const moneyPerOrb = amount / orbCount
+
+        for (let i = 0; i < orbCount; i++) {
+            orbs.push({
+                id: Math.random().toString(36).substr(2, 9),
+                x: Math.random() * (WORLD_SIZE - 100) + 50,
+                y: Math.random() * (WORLD_SIZE - 100) + 50,
                 value: moneyPerOrb
             })
         }
@@ -320,7 +376,8 @@ export class GameRoom {
                         username: player.username,
                         segments: player.segments, // Could limit this further if needed
                         color: player.color,
-                        alive: player.alive
+                        alive: player.alive,
+                        points: player.money // Include points for player labels
                     }
                 }
             }

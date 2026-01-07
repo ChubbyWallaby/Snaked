@@ -19,7 +19,7 @@ function Dashboard() {
                         <div className="card-icon">💰</div>
                         <div className="card-content">
                             <span className="card-label">Your Balance</span>
-                            <span className="card-value money">${(user?.balance || 0).toFixed(2)}</span>
+                            <span className="card-value money">{Math.floor(user?.balance || 0)} pts</span>
                         </div>
                         <Link to="/wallet" className="btn btn-secondary btn-sm">
                             Add Funds
@@ -41,7 +41,7 @@ function Dashboard() {
                         <div className="card-content">
                             <span className="card-label">Total Earnings</span>
                             <span className="card-value money-positive">
-                                ${(user?.totalEarnings || 0).toFixed(2)}
+                                {Math.floor(user?.totalEarnings || 0)} pts
                             </span>
                         </div>
                     </div>
@@ -60,7 +60,7 @@ function Dashboard() {
                 <div className="play-cta">
                     <div className="play-cta-content">
                         <h2>Ready to Play?</h2>
-                        <p>Entry fee: <span className="money">$0.005</span></p>
+                        <p>Entry fee: <span className="money">50 pts</span></p>
                         <p className="play-note">Survive 10 minutes to keep your earnings!</p>
                     </div>
                     <Link

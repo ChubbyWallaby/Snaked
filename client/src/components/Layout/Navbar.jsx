@@ -22,14 +22,7 @@ function Navbar() {
                 <div className="navbar-menu">
                     {isAuthenticated ? (
                         <>
-                            <div className="navbar-balance">
-                                <span className="balance-label">Balance:</span>
-                                <span className="balance-amount money">
-                                    ${(user?.balance || 0).toFixed(2)}
-                                </span>
-                            </div>
                             <Link to="/dashboard" className="nav-link">Dashboard</Link>
-                            <Link to="/wallet" className="nav-link">Wallet</Link>
                             {user?.role === 'admin' && <Link to="/admin" className="nav-link">Admin</Link>}
                             <Link to="/game" className="btn btn-primary btn-sm">
                                 Play Now

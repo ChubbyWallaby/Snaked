@@ -19,7 +19,7 @@ router.post('/join', authenticateToken, async (req, res) => {
 
         if (user.balance < GAME_FEE) {
             return res.status(400).json({
-                message: `Insufficient balance. Need $${GAME_FEE.toFixed(2)} to play.`
+                message: `Insufficient balance. Need ${GAME_FEE} pts to play.`
             })
         }
 
