@@ -197,12 +197,8 @@ export function AuthProvider({ children }) {
     }
 
     const refreshBalance = async () => {
-        try {
-            const response = await axios.get('/api/wallet/balance')
-            setUser(prev => ({ ...prev, balance: response.data.balance }))
-        } catch (err) {
-            console.error('Failed to refresh balance:', err)
-        }
+        // Wallet endpoint was removed, so we refresh the whole user
+        return refreshUser()
     }
 
     const refreshUser = async () => {

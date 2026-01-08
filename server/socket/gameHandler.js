@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { LobbyManager } from './LobbyManager.js'
+import { auth as firebaseAuth } from '../firebase.js'
+import { getUser } from '../db/index.js'
 
 let lobbyManager = null
 
@@ -18,11 +20,26 @@ export function setupGameSocket(io) {
 
         if (token) {
             try {
+                // Try Legacy JWT first
                 const decoded = jwt.verify(token, JWT_SECRET)
                 userId = decoded.id
                 username = decoded.username
-            } catch (err) {
-                console.log('Invalid token, using anonymous')
+            } catch (jwtErr) {
+                // Try Firebase Token
+                try {
+                    const decodedToken = await firebaseAuth.verifyIdToken(token)
+                    userId = decodedToken.uid
+                    // Fetch full user from DB to get correct username
+                    const user = await getUser(userId)
+                    if (user) {
+                        username = user.username
+                    } else {
+                        // Fallback to display name or email part
+                        username = decodedToken.name || decodedToken.email?.split('@')[0] || 'Player'
+                    }
+                } catch (fbErr) {
+                    console.log('Invalid token (JWT & Firebase), using anonymous')
+                }
             }
         }
 

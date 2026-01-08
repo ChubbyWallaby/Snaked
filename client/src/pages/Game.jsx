@@ -87,7 +87,7 @@ function Game() {
             setAdProgress(100)
 
             // Connect to server and join game with ad revenue
-            const socket = connectToServer()
+            const socket = await connectToServer()
             socket.emit('joinGame', { adRevenue: estimatedRevenue })
 
             setCollectedMoney(0)
@@ -100,13 +100,27 @@ function Game() {
         }
     }
 
-    const connectToServer = useCallback(() => {
+    const connectToServer = useCallback(async () => {
         // Use Env Var -> Hardcoded Fallback (Prod) -> Relative (Dev)
         const socketUrl = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://snaked.onrender.com' : window.location.origin)
 
         console.log('🔌 Connecting to Socket:', socketUrl)
+
+        // Get token (try Firebase first, then legacy localStorage)
+        let token = localStorage.getItem('token')
+
+        // Try to get fresh Firebase token if available
+        try {
+            const { auth } = await import('../firebase')
+            if (auth.currentUser) {
+                token = await auth.currentUser.getIdToken()
+            }
+        } catch (e) {
+            console.warn('Could not get firebase token', e)
+        }
+
         const socket = io(socketUrl, {
-            auth: { token: localStorage.getItem('token') }
+            auth: { token }
         })
 
         socketRef.current = socket
@@ -854,11 +868,9 @@ function Game() {
                                             <span className="rank">{i + 1}</span>
                                             <span className="name">
                                                 {/* Fallback to players map if username/player name is generic/missing */}
-                                                {player.username && player.username !== 'Player'
+                                                {(player.username && player.username !== 'Player')
                                                     ? player.username
-                                                    : gameStateRef.current.players.get(player.id)?.username ??
-                                                    'Player'}
-                                            </span>
+                                                    : (gameStateRef.current.players.get(player.id)?.username || 'Player')}</span>
                                             <span className="score">{player.length}</span>
                                         </li>
                                     ))}
