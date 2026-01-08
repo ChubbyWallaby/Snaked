@@ -20,10 +20,14 @@ router.post('/firebase', geoBlockMiddleware, async (req, res) => {
         }
 
         // Verify Firebase token
+        console.log('Verifying Firebase token...')
         const decodedToken = await firebaseAuth.verifyIdToken(idToken)
+        console.log('Token verified for UID:', decodedToken.uid)
+
         const { uid, email, name, picture } = decodedToken
 
         // Check if user exists in our database
+        console.log('Checking if user exists in Firestore...')
         let user = await getUser(uid)
 
         if (!user) {
@@ -69,6 +73,7 @@ router.post('/firebase', geoBlockMiddleware, async (req, res) => {
     } catch (err) {
         console.error('Firebase auth error:', err.message || err)
         console.error('Firebase auth error code:', err.code || 'unknown')
+        console.error('Stack:', err.stack) // Log stack trace
         res.status(401).json({
             message: 'Invalid Firebase token',
             error: process.env.NODE_ENV !== 'production' ? err.message : undefined
