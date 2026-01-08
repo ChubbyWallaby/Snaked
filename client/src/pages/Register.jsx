@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import DecorativeOrbs from '../components/DecorativeOrbs'
 import './Auth.css'
 
 function Register() {
@@ -65,119 +66,129 @@ function Register() {
 
     return (
         <div className="auth-page">
-            <div className="auth-card card">
-                <div className="auth-header">
-                    <h1>Join Snaked!</h1>
-                    <p>Create your free account and start playing</p>
-                </div>
+            <div className="auth-left">
+                <Link to="/" className="back-link">
+                    ← Back to home
+                </Link>
 
-                {error && (
-                    <div className="auth-error">
-                        {error}
-                    </div>
-                )}
-
-                <form onSubmit={handleSubmit} className="auth-form">
-                    <div className="input-group">
-                        <label htmlFor="username">Username</label>
-                        <input
-                            type="text"
-                            id="username"
-                            className="input"
-                            placeholder="Choose a username"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            required
-                        />
+                <div className="auth-card">
+                    <div className="auth-header">
+                        <h1>Join Snaked!</h1>
+                        <p>Create your free account and start competing</p>
                     </div>
 
-                    <div className="input-group">
-                        <label htmlFor="email">Email</label>
-                        <input
-                            type="email"
-                            id="email"
-                            className="input"
-                            placeholder="your@email.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
+                    {error && (
+                        <div className="auth-error">
+                            {error}
+                        </div>
+                    )}
 
-                    <div className="input-group">
-                        <label htmlFor="password">Password</label>
-                        <input
-                            type="password"
-                            id="password"
-                            className="input"
-                            placeholder="Min. 6 characters"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <div className="input-group">
-                        <label htmlFor="confirmPassword">Confirm Password</label>
-                        <input
-                            type="password"
-                            id="confirmPassword"
-                            className="input"
-                            placeholder="••••••••"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    {/* Age Verification */}
-                    <div className="checkbox-group">
-                        <label className="checkbox-label">
+                    <form onSubmit={handleSubmit} className="auth-form">
+                        <div className="input-group">
+                            <label htmlFor="username">Username</label>
                             <input
-                                type="checkbox"
-                                checked={ageVerified}
-                                onChange={(e) => setAgeVerified(e.target.checked)}
+                                type="text"
+                                id="username"
+                                className="input"
+                                placeholder="Choose a username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
                                 required
                             />
-                            <span>
-                                I confirm that I am <strong>18 years of age or older</strong>
-                            </span>
-                        </label>
-                    </div>
+                        </div>
 
-                    {/* Terms of Service */}
-                    <div className="checkbox-group">
-                        <label className="checkbox-label">
+                        <div className="input-group">
+                            <label htmlFor="email">Email</label>
                             <input
-                                type="checkbox"
-                                checked={termsAccepted}
-                                onChange={(e) => setTermsAccepted(e.target.checked)}
+                                type="email"
+                                id="email"
+                                className="input"
+                                placeholder="your@email.com"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 required
                             />
-                            <span>
-                                I agree to the{' '}
-                                <Link to="/terms" target="_blank" className="terms-link">
-                                    Terms of Service
-                                </Link>
-                            </span>
-                        </label>
+                        </div>
+
+                        <div className="input-group">
+                            <label htmlFor="password">Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                className="input"
+                                placeholder="Min. 6 characters"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        <div className="input-group">
+                            <label htmlFor="confirmPassword">Confirm Password</label>
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                className="input"
+                                placeholder="••••••••"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+
+                        {/* Age Verification */}
+                        <div className="checkbox-group">
+                            <label className="checkbox-label">
+                                <input
+                                    type="checkbox"
+                                    checked={ageVerified}
+                                    onChange={(e) => setAgeVerified(e.target.checked)}
+                                    required
+                                />
+                                <span>
+                                    I confirm that I am <strong>18 years of age or older</strong>
+                                </span>
+                            </label>
+                        </div>
+
+                        {/* Terms of Service */}
+                        <div className="checkbox-group">
+                            <label className="checkbox-label">
+                                <input
+                                    type="checkbox"
+                                    checked={termsAccepted}
+                                    onChange={(e) => setTermsAccepted(e.target.checked)}
+                                    required
+                                />
+                                <span>
+                                    I agree to the{' '}
+                                    <Link to="/terms" target="_blank" className="terms-link">
+                                        Terms of Service
+                                    </Link>
+                                </span>
+                            </label>
+                        </div>
+
+                        <button
+                            type="submit"
+                            className="btn btn-primary btn-lg auth-submit"
+                            disabled={loading}
+                        >
+                            {loading ? 'Creating Account...' : 'Create Account'}
+                        </button>
+                    </form>
+
+                    <div className="auth-footer">
+                        <p>
+                            Already have an account?{' '}
+                            <Link to="/login">Sign in</Link>
+                        </p>
                     </div>
-
-                    <button
-                        type="submit"
-                        className="btn btn-primary btn-lg auth-submit"
-                        disabled={loading}
-                    >
-                        {loading ? 'Creating Account...' : 'Create Account'}
-                    </button>
-                </form>
-
-                <div className="auth-footer">
-                    <p>
-                        Already have an account?{' '}
-                        <Link to="/login">Sign in</Link>
-                    </p>
                 </div>
+            </div>
+
+            <div className="auth-right">
+                <DecorativeOrbs />
             </div>
         </div>
     )
