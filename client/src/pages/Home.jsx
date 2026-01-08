@@ -17,14 +17,13 @@ function Home() {
 
                 <div className="hero-content">
                     <h1 className="hero-title">
-                        <span className="title-line">SLITHER.</span>
-                        <span className="title-line accent">COLLECT.</span>
-                        <span className="title-line gold">PROFIT.</span>
+                        <span className="title-line">WATCH.</span>
+                        <span className="title-line accent">PLAY.</span>
+                        <span className="title-line gold">WIN.</span>
                     </h1>
 
                     <p className="hero-subtitle">
-                        The ultimate multiplayer snake game where every bite counts.
-                        Deposit real money, eat your opponents, and cash out your winnings!
+                        Watch ads to play free. Compete for rewards. Win real prizes in the ultimate multiplayer snake game!
                     </p>
 
                     <div className="hero-stats">
@@ -37,8 +36,8 @@ function Home() {
                             <span className="stat-label">Active Players</span>
                         </div>
                         <div className="stat-item">
-                            <span className="stat-value">50 pts</span>
-                            <span className="stat-label">Per Game</span>
+                            <span className="stat-value">FREE</span>
+                            <span className="stat-label">To Play</span>
                         </div>
                     </div>
 
@@ -68,30 +67,30 @@ function Home() {
                 <div className="steps-grid">
                     <div className="step-card card">
                         <div className="step-number">01</div>
-                        <div className="step-icon">💰</div>
-                        <h3>Deposit</h3>
-                        <p>Add funds to your account using a credit card. Secure payments powered by Stripe.</p>
+                        <div className="step-icon">📺</div>
+                        <h3>Watch Ad</h3>
+                        <p>Watch a short ad to enter the game for free. No payment required!</p>
                     </div>
 
                     <div className="step-card card">
                         <div className="step-number">02</div>
                         <div className="step-icon">🎮</div>
-                        <h3>Play</h3>
-                        <p>Join a game for just 50 pts. Control your snake and eat food to grow bigger.</p>
+                        <h3>Play & Compete</h3>
+                        <p>Control your snake, eat food to grow, and compete with other players in real-time.</p>
                     </div>
 
                     <div className="step-card card">
                         <div className="step-number">03</div>
-                        <div className="step-icon">⚔️</div>
-                        <h3>Compete</h3>
-                        <p>Hunt other players! When they die, they drop their money as collectible orbs.</p>
+                        <div className="step-icon">💎</div>
+                        <h3>Collect Rewards</h3>
+                        <p>When players are eliminated, they drop reward orbs. Collect them to increase your earnings!</p>
                     </div>
 
                     <div className="step-card card">
                         <div className="step-number">04</div>
                         <div className="step-icon">🏆</div>
-                        <h3>Cash Out</h3>
-                        <p>Survive 10 minutes and keep all the money you collected. Withdraw anytime!</p>
+                        <h3>Win Prizes</h3>
+                        <p>Survive 3+ minutes to keep your collected rewards. The longer you survive, the more you can win!</p>
                     </div>
                 </div>
             </section>
@@ -106,15 +105,15 @@ function Home() {
                     </div>
 
                     <div className="feature-card">
-                        <span className="feature-icon">🔒</span>
-                        <h3>Secure Payments</h3>
-                        <p>All transactions are processed securely through Stripe.</p>
+                        <span className="feature-icon">🎁</span>
+                        <h3>Free to Play</h3>
+                        <p>Watch short ads to play - no deposits or payments required to compete.</p>
                     </div>
 
                     <div className="feature-card">
                         <span className="feature-icon">💎</span>
                         <h3>Fair Play</h3>
-                        <p>10-minute minimum ensures everyone has a fair chance to compete.</p>
+                        <p>3-minute minimum ensures everyone has a fair chance to collect rewards and compete.</p>
                     </div>
                 </div>
             </section>

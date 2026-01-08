@@ -16,14 +16,12 @@ function Dashboard() {
                 <div className="dashboard-grid">
                     {/* Balance Card */}
                     <div className="dashboard-card card balance-card">
-                        <div className="card-icon">💰</div>
+                        <div className="card-icon">💎</div>
                         <div className="card-content">
-                            <span className="card-label">Your Balance</span>
+                            <span className="card-label">Your Rewards</span>
                             <span className="card-value money">{Math.floor(user?.balance || 0)} pts</span>
+                            <span className="card-subtitle">Earned from ads & gameplay</span>
                         </div>
-                        <Link to="/wallet" className="btn btn-secondary btn-sm">
-                            Add Funds
-                        </Link>
                     </div>
 
                     {/* Games Played Card */}
@@ -60,20 +58,15 @@ function Dashboard() {
                 <div className="play-cta">
                     <div className="play-cta-content">
                         <h2>Ready to Play?</h2>
-                        <p>Entry fee: <span className="money">50 pts</span></p>
-                        <p className="play-note">Survive 10 minutes to keep your earnings!</p>
+                        <p>Entry: <span className="highlight">Watch Short Ad (Free)</span></p>
+                        <p className="play-note">Survive 3+ minutes to keep your earnings!</p>
                     </div>
                     <Link
                         to="/game"
-                        className={`btn btn-primary btn-lg ${(user?.balance || 0) < 0.005 ? 'btn-disabled' : ''}`}
+                        className="btn btn-primary btn-lg"
                     >
                         🎮 Start Game
                     </Link>
-                    {(user?.balance || 0) < 0.005 && (
-                        <p className="insufficient-funds">
-                            Insufficient balance. <Link to="/wallet">Add funds</Link> to play.
-                        </p>
-                    )}
                 </div>
 
                 {/* Quick Stats */}
