@@ -659,12 +659,6 @@ function Game() {
         }
     }, [gameStatus])
 
-    const resolvedUsername =
-        player.username && player.username !== 'Player'
-            ? player.username
-            : gameStateRef.current.players.get(player.id)?.username ??
-            'Player';
-
     // Load Google ads when ad watching screen appears
     useEffect(() => {
         if (gameStatus === 'watchingAd') {
@@ -862,7 +856,8 @@ function Game() {
                                                 {/* Fallback to players map if username/player name is generic/missing */}
                                                 {player.username && player.username !== 'Player'
                                                     ? player.username
-                                                    : (gameStateRef.current.players.get(player.id)?.username || player.username || 'Player')}
+                                                    : gameStateRef.current.players.get(player.id)?.username ??
+                                                    'Player'}
                                             </span>
                                             <span className="score">{player.length}</span>
                                         </li>
