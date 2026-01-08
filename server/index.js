@@ -1,16 +1,17 @@
+// Load environment variables FIRST - before any other imports
+import dotenv from 'dotenv'
+dotenv.config()
+
 import express from 'express'
 import cors from 'cors'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
-import dotenv from 'dotenv'
 
 import authRoutes from './routes/auth.js'
 import gameRoutes from './routes/game.js'
 import adminRoutes from './routes/admin.js'
 import { setupGameSocket } from './socket/gameHandler.js'
 import { initDatabase } from './db/index.js'
-
-dotenv.config()
 
 const app = express()
 const server = createServer(app)
