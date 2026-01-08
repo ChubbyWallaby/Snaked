@@ -247,14 +247,17 @@ export class GameRoom {
             // Body collision
             for (let i = 1; i < other.segments.length; i++) {
                 const segment = other.segments[i]
-                if (this.pointInCircle(head.x, head.y, segment.x, segment.y, SEGMENT_RADIUS * 1.5)) {
+                // Strict hitbox: match visual radius (12px)
+                if (this.pointInCircle(head.x, head.y, segment.x, segment.y, SEGMENT_RADIUS)) {
                     return otherId // Killed by otherId
                 }
             }
 
-            // Head collision
+            // Head collision (Head-to-Head)
+            // Use tighter radius for head-to-head (0.9) to favor "cutting off" maneuvers.
+            // If hitboxes are too big, a flanker might "hit the head" instead of passing it.
             const otherHead = other.segments[0]
-            if (this.pointInCircle(head.x, head.y, otherHead.x, otherHead.y, SEGMENT_RADIUS * 1.5)) {
+            if (this.pointInCircle(head.x, head.y, otherHead.x, otherHead.y, SEGMENT_RADIUS * 0.9)) {
                 if (player.segments.length <= other.segments.length) {
                     return otherId // Killed by otherId
                 }
@@ -399,7 +402,7 @@ export class GameRoom {
             }
 
             this.io.to(this.roomId).emit('gameState', update)
-        }, 100)
+        }, 50)
     }
 
     stop() {
