@@ -1,35 +1,51 @@
 import admin from 'firebase-admin'
 
 // Initialize Firebase Admin SDK
-// Note: dotenv.config() must be called before this file is imported (done in index.js)
+// Supports two methods:
+// 1. FIREBASE_SERVICE_ACCOUNT_BASE64 - Base64 encoded service account JSON (recommended)
+// 2. Individual env vars: FIREBASE_PROJECT_ID, FIREBASE_PRIVATE_KEY, FIREBASE_CLIENT_EMAIL
 
-// Handle private key - Render may store it with literal \n or actual newlines
-let privateKey = process.env.FIREBASE_PRIVATE_KEY
+let serviceAccount = null
 
-if (privateKey) {
-    // Replace escaped newlines with actual newlines
-    privateKey = privateKey.replace(/\\n/g, '\n')
-
-    // If wrapped in quotes, remove them
-    if (privateKey.startsWith('"') && privateKey.endsWith('"')) {
-        privateKey = privateKey.slice(1, -1)
+// Method 1: Base64 encoded service account (most reliable for cloud deployments)
+if (process.env.FIREBASE_SERVICE_ACCOUNT_BASE64) {
+    try {
+        const decoded = Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_BASE64, 'base64').toString('utf8')
+        serviceAccount = JSON.parse(decoded)
+        console.log('🔥 Loaded Firebase credentials from base64 encoded service account')
+    } catch (err) {
+        console.error('❌ Failed to decode FIREBASE_SERVICE_ACCOUNT_BASE64:', err.message)
     }
 }
 
-const serviceAccount = {
-    type: 'service_account',
-    project_id: process.env.FIREBASE_PROJECT_ID,
-    private_key: privateKey,
-    client_email: process.env.FIREBASE_CLIENT_EMAIL
+// Method 2: Individual environment variables (fallback)
+if (!serviceAccount && process.env.FIREBASE_PROJECT_ID) {
+    let privateKey = process.env.FIREBASE_PRIVATE_KEY
+    if (privateKey) {
+        privateKey = privateKey.replace(/\\n/g, '\n')
+        if (privateKey.startsWith('"') && privateKey.endsWith('"')) {
+            privateKey = privateKey.slice(1, -1)
+        }
+    }
+
+    serviceAccount = {
+        type: 'service_account',
+        project_id: process.env.FIREBASE_PROJECT_ID,
+        private_key: privateKey,
+        client_email: process.env.FIREBASE_CLIENT_EMAIL
+    }
+    console.log('🔥 Loaded Firebase credentials from individual env vars')
 }
 
-// Log initialization status (without sensitive data)
-console.log('🔥 Firebase config check:')
-console.log('   - project_id:', serviceAccount.project_id ? '✓ set' : '✗ missing')
-console.log('   - client_email:', serviceAccount.client_email ? '✓ set' : '✗ missing')
-console.log('   - private_key:', privateKey ? `✓ set (${privateKey.length} chars)` : '✗ missing')
+// Log initialization status
+if (serviceAccount) {
+    console.log('🔥 Firebase config:')
+    console.log('   - project_id:', serviceAccount.project_id || 'missing')
+    console.log('   - client_email:', serviceAccount.client_email ? '✓' : 'missing')
+    console.log('   - private_key:', serviceAccount.private_key ? `✓ (${serviceAccount.private_key.length} chars)` : 'missing')
+}
 
-if (!admin.apps.length) {
+if (!admin.apps.length && serviceAccount) {
     try {
         admin.initializeApp({
             credential: admin.credential.cert(serviceAccount)
@@ -37,11 +53,12 @@ if (!admin.apps.length) {
         console.log('🔥 Firebase Admin initialized successfully')
     } catch (err) {
         console.error('❌ Firebase Admin initialization failed:', err.message)
-        // Don't exit - allow server to start for legacy auth
     }
+} else if (!serviceAccount) {
+    console.error('❌ No Firebase credentials found! Set FIREBASE_SERVICE_ACCOUNT_BASE64 or individual env vars.')
 }
 
-export const db = admin.firestore()
-export const auth = admin.auth()
+export const db = admin.apps.length ? admin.firestore() : null
+export const auth = admin.apps.length ? admin.auth() : null
 
 export default admin
