@@ -67,8 +67,12 @@ router.post('/firebase', geoBlockMiddleware, async (req, res) => {
             }
         })
     } catch (err) {
-        console.error('Firebase auth error:', err)
-        res.status(401).json({ message: 'Invalid Firebase token' })
+        console.error('Firebase auth error:', err.message || err)
+        console.error('Firebase auth error code:', err.code || 'unknown')
+        res.status(401).json({
+            message: 'Invalid Firebase token',
+            error: process.env.NODE_ENV !== 'production' ? err.message : undefined
+        })
     }
 })
 
