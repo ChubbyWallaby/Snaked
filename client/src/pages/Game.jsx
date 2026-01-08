@@ -152,9 +152,9 @@ function Game() {
             }
         })
 
+        let lastUiUpdate = 0
         socket.on('gameState', (state) => {
-            // Debug: Log received state (remove in production)
-            console.log(`[GameState] Players: ${Object.keys(state.players).length}, Food: ${state.food?.length || 'cached'}, Leaderboard: ${state.leaderboard?.length || 0}`)
+            // Debug logs removed for performance
 
             // Only store alive players to prevent ghost snakes
             const alivePlayers = Object.entries(state.players).filter(([_, player]) => player.alive !== false)
@@ -170,8 +170,12 @@ function Game() {
                 gameStateRef.current.moneyOrbs = state.moneyOrbs
             }
 
-            setLeaderboard(state.leaderboard || [])
-            setPlayerCount(state.playerCount || 0)
+            // Throttle UI updates to 500ms
+            if (Date.now() - lastUiUpdate > 500) {
+                setLeaderboard(state.leaderboard || [])
+                setPlayerCount(state.playerCount || 0)
+                lastUiUpdate = Date.now()
+            }
         })
 
         socket.on('playerJoined', (player) => {
@@ -283,7 +287,7 @@ function Game() {
         // Game loop with delta-time for consistent speed
         const gameLoop = () => {
             const now = Date.now()
-            const deltaTime = (now - lastFrameTimeRef.current) / 25 // Normalize to 60fps
+            const deltaTime = (now - lastFrameTimeRef.current) / 16.67 // Normalize to 60fps
             lastFrameTimeRef.current = now
 
             update(deltaTime)

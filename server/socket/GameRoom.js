@@ -188,7 +188,7 @@ export class GameRoom {
             this.handlePlayerDeath(player, killerId)
         } else {
             // Broadcast move
-            // Optimization: Don't rebroadcast every single move immediately if we are ticking at 100ms anyway
+            // Optimization: Don't rebroadcast every single move immediately.
             // The gameloop will pick up the new state. 
             // However, for smooth opponent movement, we might want to emit key events.
             // But relying on the tick loop is more bandwidth efficient.
@@ -385,11 +385,11 @@ export class GameRoom {
                 }
             }
 
-            // Debug: Log broadcast info (remove in production)
-            const playerCount = Object.keys(playersObject).length
-            if (playerCount > 0) {
-                console.log(`[Room ${this.roomId.slice(0, 8)}] Broadcasting ${playerCount} players, ${this.food.length} food, leaderboard: ${this.getLeaderboard().length}`)
-            }
+            // Debug logs disabled for performance
+            // const playerCount = Object.keys(playersObject).length
+            // if (playerCount > 0) {
+            //     console.log(`[Room ${this.roomId.slice(0, 8)}] Broadcasting ${playerCount} players, ${this.food.length} food, leaderboard: ${this.getLeaderboard().length}`)
+            // }
 
             const update = {
                 players: playersObject,
@@ -405,7 +405,7 @@ export class GameRoom {
             }
 
             this.io.to(this.roomId).emit('gameState', update)
-        }, 50)
+        }, 15) // ~66Hz update rate
     }
 
     stop() {
