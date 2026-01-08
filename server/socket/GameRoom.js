@@ -226,12 +226,9 @@ export class GameRoom {
             disconnected
         })
 
-        // Remove player from Map after brief delay (allows death animation)
-        const timeout = setTimeout(() => {
-            this.players.delete(player.id)
-            this.cleanupTimeouts.delete(timeout)
-        }, 2000)
-        this.cleanupTimeouts.add(timeout)
+        // Immediately remove dead player to prevent ghost snakes
+        // The client handles death animation locally
+        this.players.delete(player.id)
     }
 
     pointInCircle(px, py, cx, cy, radius) {

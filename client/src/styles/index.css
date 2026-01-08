@@ -5,52 +5,52 @@
 
 /* CSS Variables - Design Tokens */
 :root {
-  /* Primary Colors - Calm Blue */
-  --color-primary: #3b82f6;
-  --color-primary-dark: #2563eb;
-  --color-primary-glow: rgba(59, 130, 246, 0.2);
+  /* Primary Colors - Sage Green */
+  --color-primary: #74a38f;
+  --color-primary-dark: #5d8270;
+  --color-primary-glow: rgba(116, 163, 143, 0.2);
 
-  /* Secondary Colors - Slate Gray */
-  --color-secondary: #64748b;
-  --color-secondary-dark: #475569;
-  --color-secondary-glow: rgba(100, 116, 139, 0.2);
+  /* Secondary Colors - Soft Gold */
+  --color-secondary: #d4b483;
+  --color-secondary-dark: #b99866;
+  --color-secondary-glow: rgba(212, 180, 131, 0.2);
 
   /* Accent Colors */
-  --color-accent: #10b981;
-  --color-gold: #fbbf24;
-  --color-danger: #ef4444;
-  --color-success: #10b981;
+  --color-accent: #8bb4a0;
+  --color-gold: #d4b483;
+  --color-danger: #c86b5f;
+  --color-success: #74a38f;
 
-  /* Background Colors - Lighter Dark Tones */
-  --bg-dark: #0f172a;
-  --bg-darker: #0a0f1a;
-  --bg-card: rgba(30, 41, 59, 0.7);
-  --bg-card-hover: rgba(30, 41, 59, 0.85);
-  --bg-glass: rgba(255, 255, 255, 0.03);
-  --bg-glass-hover: rgba(255, 255, 255, 0.06);
+  /* Background Colors - Warm Paper Tones */
+  --bg-dark: #f9faf7;
+  --bg-darker: #f5f6f3;
+  --bg-card: rgba(255, 255, 255, 0.6);
+  --bg-card-hover: rgba(255, 255, 255, 0.8);
+  --bg-glass: rgba(116, 163, 143, 0.05);
+  --bg-glass-hover: rgba(116, 163, 143, 0.08);
 
   /* Text Colors */
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --text-muted: rgba(255, 255, 255, 0.4);
+  --text-primary: #2d3e3a;
+  --text-secondary: #5a6c66;
+  --text-muted: #8a9a94;
 
   /* Gradients - Subtle */
-  --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  --gradient-secondary: linear-gradient(135deg, #64748b 0%, #475569 100%);
-  --gradient-dark: linear-gradient(180deg, #0f172a 0%, #0a0f1a 100%);
+  --gradient-primary: linear-gradient(135deg, #74a38f 0%, #5d8270 100%);
+  --gradient-secondary: linear-gradient(135deg, #d4b483 0%, #b99866 100%);
+  --gradient-dark: linear-gradient(180deg, #f9faf7 0%, #f5f6f3 100%);
   --gradient-glow: radial-gradient(circle, var(--color-primary-glow) 0%, transparent 70%);
 
-  /* Shadows - Softer */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
-  --shadow-glow: 0 0 20px var(--color-primary-glow);
+  /* Shadows - Softer for Light Background */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 16px var(--color-primary-glow);
 
   /* Border Radius */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  --radius-xl: 30px;
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
 
   /* Transitions */
   --transition-fast: 0.15s ease;
@@ -104,8 +104,8 @@ body::before {
   width: 100%;
   height: 100%;
   background-image:
-    linear-gradient(rgba(59, 130, 246, 0.01) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(59, 130, 246, 0.01) 1px, transparent 1px);
+    linear-gradient(rgba(116, 163, 143, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(116, 163, 143, 0.015) 1px, transparent 1px);
   background-size: 50px 50px;
   pointer-events: none;
   z-index: -1;

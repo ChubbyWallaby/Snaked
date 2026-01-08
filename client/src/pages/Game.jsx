@@ -118,6 +118,10 @@ function Game() {
             gameStateRef.current.food = []
             gameStateRef.current.moneyOrbs = []
 
+            // Clear local player state
+            playerRef.current.segments = []
+            playerRef.current.alive = true
+
             // Initialize local player with server data
             if (player) {
                 playerRef.current.id = player.id
@@ -132,7 +136,9 @@ function Game() {
             // Debug: Log received state (remove in production)
             console.log(`[GameState] Players: ${Object.keys(state.players).length}, Food: ${state.food?.length || 'cached'}, Leaderboard: ${state.leaderboard?.length || 0}`)
 
-            gameStateRef.current.players = new Map(Object.entries(state.players))
+            // Only store alive players to prevent ghost snakes
+            const alivePlayers = Object.entries(state.players).filter(([_, player]) => player.alive !== false)
+            gameStateRef.current.players = new Map(alivePlayers)
 
             // Only update food if server included it (optimization: server only sends when changed)
             if (state.food) {
@@ -673,6 +679,11 @@ function Game() {
                 <div className="game-lobby">
                     <div className="lobby-content card">
                         <h1>🐍 Ready to Play?</h1>
+
+                        <div className="prize-pool-banner">
+                            <span className="prize-label">Live Prize Pool</span>
+                            <span className="prize-amount">100,000 Pts</span>
+                        </div>
 
                         <div className="game-info">
                             <div className="info-item">

@@ -31,6 +31,35 @@
     margin-bottom: var(--space-lg);
 }
 
+/* Prize Pool Banner */
+.prize-pool-banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-lg);
+    background: linear-gradient(135deg, rgba(212, 180, 131, 0.15) 0%, rgba(116, 163, 143, 0.15) 100%);
+    border: 2px solid var(--color-gold);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-lg);
+}
+
+.prize-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+}
+
+.prize-amount {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-gold);
+    text-shadow: 0 0 8px rgba(212, 180, 131, 0.3);
+}
+
 .game-info {
     display: flex;
     flex-direction: column;
@@ -74,7 +103,7 @@
 }
 
 .game-error {
-    background: rgba(255, 68, 68, 0.1);
+    background: rgba(200, 107, 95, 0.1);
     border: 1px solid var(--color-danger);
     color: var(--color-danger);
     padding: var(--space-md);
@@ -108,12 +137,13 @@
 }
 
 .hud-item {
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(249, 250, 247, 0.95);
     backdrop-filter: blur(10px);
     padding: var(--space-sm) var(--space-md);
     border-radius: var(--radius-md);
     text-align: center;
     min-width: 100px;
+    border: 1px solid rgba(116, 163, 143, 0.2);
 }
 
 .hud-label {
@@ -149,18 +179,19 @@
 }
 
 .leaderboard {
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(249, 250, 247, 0.95);
     backdrop-filter: blur(10px);
     padding: var(--space-md);
     border-radius: var(--radius-md);
     min-width: 180px;
+    border: 1px solid rgba(116, 163, 143, 0.2);
 }
 
 .leaderboard h4 {
     font-size: 0.9rem;
     margin-bottom: var(--space-sm);
     padding-bottom: var(--space-sm);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(116, 163, 143, 0.2);
 }
 
 .leaderboard ol {
@@ -221,7 +252,7 @@
 
 .boosting {
     background: var(--gradient-primary);
-    color: var(--bg-dark);
+    color: white;
     padding: var(--space-sm) var(--space-md);
     border-radius: var(--radius-md);
     font-family: var(--font-display);

@@ -68,7 +68,7 @@ function Register() {
             <div className="auth-card card">
                 <div className="auth-header">
                     <h1>Join Snaked!</h1>
-                    <p>Create your account and start earning</p>
+                    <p>Create your free account and start playing</p>
                 </div>
 
                 {error && (
