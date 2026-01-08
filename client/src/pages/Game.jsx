@@ -41,6 +41,10 @@ function Game() {
     const [snakeLength, setSnakeLength] = useState(INITIAL_SNAKE_LENGTH)
     const [adProgress, setAdProgress] = useState(0)
 
+    // Refs for game loop (to avoid closure staleness)
+    const collectedMoneyRef = useRef(0)
+    const inGameBalanceRef = useRef(0)
+
     // Player State (local for rendering)
     const playerRef = useRef({
         id: null,
@@ -88,6 +92,8 @@ function Game() {
 
             setCollectedMoney(0)
             setInGameBalance(0)
+            collectedMoneyRef.current = 0
+            inGameBalanceRef.current = 0
         } catch (err) {
             setGameStatus('lobby')
             setError(err.message || 'Failed to load ad. Please try again.')
@@ -179,6 +185,8 @@ function Game() {
             if (data.playerId === playerRef.current.id) {
                 setCollectedMoney(prev => prev + data.amount)
                 setInGameBalance(prev => prev + data.amount)
+                collectedMoneyRef.current += data.amount
+                inGameBalanceRef.current += data.amount
             }
             // Remove collected orb
             gameStateRef.current.moneyOrbs = gameStateRef.current.moneyOrbs.filter(
@@ -208,7 +216,7 @@ function Game() {
         if (canKeepMoney) {
             // Transfer collected money to balance
             axios.post('/api/game/end', {
-                earnings: collectedMoney,
+                earnings: collectedMoneyRef.current,
                 survived: false
             }).then(() => refreshBalance())
         }
@@ -221,7 +229,7 @@ function Game() {
         if (canKeepMoney && gameStatus === 'playing') {
             try {
                 await axios.post('/api/game/end', {
-                    earnings: collectedMoney,
+                    earnings: collectedMoneyRef.current,
                     survived: true
                 })
                 await refreshBalance()
@@ -602,7 +610,8 @@ function Game() {
 
                 // Points
                 ctx.font = '12px Arial'
-                const points = Math.floor(collectedMoney + inGameBalance)
+                // Use refs to avoid closure staleness in render loop
+                const points = Math.floor(collectedMoneyRef.current + inGameBalanceRef.current)
                 ctx.strokeText(`${points} pts`, screenX, screenY - 45)
                 ctx.fillText(`${points} pts`, screenX, screenY - 45)
             }
@@ -833,21 +842,6 @@ function Game() {
                                     </span>
                                 )}
                             </div>
-
-                            <div className="hud-item balance">
-                                <span className="hud-label">In-Game Balance</span>
-                                <span className="hud-value money">{Math.floor(inGameBalance)} pts</span>
-                            </div>
-
-                            <div className="hud-item collected">
-                                <span className="hud-label">Collected</span>
-                                <span className="hud-value money-positive">+{Math.floor(collectedMoney)} pts</span>
-                            </div>
-
-                            <div className="hud-item length">
-                                <span className="hud-label">Length</span>
-                                <span className="hud-value">{snakeLength}</span>
-                            </div>
                         </div>
 
                         <div className="hud-left">
@@ -857,7 +851,12 @@ function Game() {
                                     {leaderboard.slice(0, 5).map((player, i) => (
                                         <li key={player.id} className={player.id === playerRef.current.id ? 'you' : ''}>
                                             <span className="rank">{i + 1}</span>
-                                            <span className="name">{player.username}</span>
+                                            <span className="name">
+                                                {/* Fallback to players map if username/player name is generic/missing */}
+                                                {player.username && player.username !== 'Player'
+                                                    ? player.username
+                                                    : (gameStateRef.current.players.get(player.id)?.username || player.username || 'Player')}
+                                            </span>
                                             <span className="score">{player.length}</span>
                                         </li>
                                     ))}
