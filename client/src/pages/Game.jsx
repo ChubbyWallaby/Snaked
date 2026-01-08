@@ -283,7 +283,7 @@ function Game() {
         // Game loop with delta-time for consistent speed
         const gameLoop = () => {
             const now = Date.now()
-            const deltaTime = (now - lastFrameTimeRef.current) / 16.67 // Normalize to 60fps
+            const deltaTime = (now - lastFrameTimeRef.current) / 25 // Normalize to 60fps
             lastFrameTimeRef.current = now
 
             update(deltaTime)
