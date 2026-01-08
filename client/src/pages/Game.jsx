@@ -506,8 +506,10 @@ function Game() {
 
             if (screenX > -50 && screenX < canvas.width + 50 &&
                 screenY > -50 && screenY < canvas.height + 50) {
+                // Logarithmic scaling for size: 10pts -> ~14px, 100pts -> ~18px, 1000pts -> ~22px
+                const radius = 10 + Math.log10(Math.max(1, orb.value)) * 4
                 ctx.beginPath()
-                ctx.arc(screenX, screenY, 10 + orb.value * 2, 0, Math.PI * 2)
+                ctx.arc(screenX, screenY, radius, 0, Math.PI * 2)
                 ctx.fillStyle = '#ffd700'
                 ctx.fill()
 
@@ -657,6 +659,11 @@ function Game() {
         }
     }, [gameStatus])
 
+    const resolvedUsername =
+        player.username && player.username !== 'Player'
+            ? player.username
+            : gameStateRef.current.players.get(player.id)?.username ??
+            'Player';
 
     // Load Google ads when ad watching screen appears
     useEffect(() => {

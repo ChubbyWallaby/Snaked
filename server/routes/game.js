@@ -59,11 +59,13 @@ router.post('/end', authenticateToken, async (req, res) => {
 
         // Add earnings to balance
         if (earnings && earnings > 0) {
-            const newBalance = user.balance + earnings
+            // Convert points to money (10000 points = 1.00 currency)
+            const earningsValue = earnings / 10000
+            const newBalance = user.balance + earningsValue
             await updateUser(req.user.id, {
                 balance: newBalance,
                 gamesPlayed: (user.gamesPlayed || 0) + 1,
-                totalEarnings: (user.totalEarnings || 0) + earnings
+                totalEarnings: (user.totalEarnings || 0) + earningsValue
             })
 
             // Record earnings transaction
@@ -71,7 +73,7 @@ router.post('/end', authenticateToken, async (req, res) => {
                 id: uuidv4(),
                 userId: req.user.id,
                 type: 'earnings',
-                amount: earnings,
+                amount: earningsValue,
                 createdAt: new Date().toISOString()
             })
 
