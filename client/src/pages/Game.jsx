@@ -66,6 +66,12 @@ function Game() {
         camera: { x: 0, y: 0 }
     })
 
+    // Track last sent state to avoid redundant network calls
+    const lastSentState = useRef({
+        direction: { x: 1, y: 0 },
+        boosting: false
+    })
+
     // Mouse position
     const mouseRef = useRef({ x: 0, y: 0 })
 
@@ -154,11 +160,40 @@ function Game() {
 
         let lastUiUpdate = 0
         socket.on('gameState', (state) => {
-            // Debug logs removed for performance
+            // Server reconciliation: Update positions from authoritative server
+            const serverPlayers = new Map()
 
-            // Only store alive players to prevent ghost snakes
-            const alivePlayers = Object.entries(state.players).filter(([_, player]) => player.alive !== false)
-            gameStateRef.current.players = new Map(alivePlayers)
+            for (const [id, serverPlayer] of Object.entries(state.players)) {
+                if (serverPlayer.alive !== false) {
+                    // For local player: reconcile position if difference is significant
+                    if (id === playerRef.current.id) {
+                        if (serverPlayer.segments && serverPlayer.segments.length > 0 && playerRef.current.segments.length > 0) {
+                            const serverHead = serverPlayer.segments[0]
+                            const clientHead = playerRef.current.segments[0]
+                            const dx = serverHead.x - clientHead.x
+                            const dy = serverHead.y - clientHead.y
+                            const distSq = dx * dx + dy * dy
+
+                            // If server and client diverge by more than 15px, reconcile
+                            if (distSq > 225) { // 15^2 = 225
+                                console.log(`Reconciling position. Diff: ${Math.sqrt(distSq).toFixed(1)}px`)
+                                // Smoothly interpolate toward server position
+                                playerRef.current.segments = serverPlayer.segments
+                            }
+                            // Update length from server (authoritative for food collection)
+                            if (serverPlayer.segments.length !== playerRef.current.segments.length) {
+                                playerRef.current.segments = serverPlayer.segments
+                                setSnakeLength(serverPlayer.segments.length)
+                            }
+                        }
+                    } else {
+                        // For other players: store server data for prediction
+                        serverPlayers.set(id, serverPlayer)
+                    }
+                }
+            }
+
+            gameStateRef.current.players = serverPlayers
 
             // Only update food if server included it (optimization: server only sends when changed)
             if (state.food) {
@@ -359,6 +394,28 @@ function Game() {
         }
     }, [])
 
+    // Predict movement for a snake based on current state
+    const predictMovement = useCallback((snake, deltaTime = 1) => {
+        if (!snake || !snake.segments || snake.segments.length === 0) return
+
+        const head = snake.segments[0]
+        const direction = snake.direction || { x: 1, y: 0 }
+        const speed = snake.speed || NORMAL_SPEED
+
+        const newHead = {
+            x: head.x + direction.x * speed * deltaTime,
+            y: head.y + direction.y * speed * deltaTime
+        }
+
+        // Boundary checking
+        newHead.x = Math.max(SEGMENT_RADIUS, Math.min(WORLD_SIZE - SEGMENT_RADIUS, newHead.x))
+        newHead.y = Math.max(SEGMENT_RADIUS, Math.min(WORLD_SIZE - SEGMENT_RADIUS, newHead.y))
+
+        // Update segments
+        snake.segments.unshift(newHead)
+        snake.segments.pop()
+    }, [])
+
     // Check collision between point and circle
     const pointInCircle = (px, py, cx, cy, radius) => {
         const dx = px - cx
@@ -367,7 +424,7 @@ function Game() {
     }
 
     // Update game state (deltaTime normalized to 60fps: 1.0 = 60fps, 2.0 = 30fps)
-    const update = (deltaTime = 1) => {
+    const update = useCallback((deltaTime = 1) => {
         const player = playerRef.current
         if (!player.alive || gameStatus !== 'playing') return
 
@@ -386,7 +443,24 @@ function Game() {
             player.direction.y /= len
         }
 
-        // Move head
+        // Check if direction or boosting changed significantly
+        const directionChanged = Math.abs(player.direction.x - lastSentState.current.direction.x) > 0.01 ||
+            Math.abs(player.direction.y - lastSentState.current.direction.y) > 0.01
+        const boostingChanged = player.boosting !== lastSentState.current.boosting
+
+        // Only send to server if state changed (optimization!)
+        if ((directionChanged || boostingChanged) && socketRef.current) {
+            socketRef.current.emit('move', {
+                direction: player.direction,
+                boosting: player.boosting
+            })
+            lastSentState.current = {
+                direction: { ...player.direction },
+                boosting: player.boosting
+            }
+        }
+
+        // CLIENT-SIDE PREDICTION: Move player locally (don't wait for server)
         if (player.segments.length > 0) {
             const head = player.segments[0]
             const newHead = {
@@ -422,7 +496,7 @@ function Game() {
                 // Update length display
                 setSnakeLength(player.segments.length)
 
-                // Respawn food that was eaten
+                // Respawn food that was eaten (client-side prediction)
                 for (let i = 0; i < foodEaten; i++) {
                     gameStateRef.current.food.push({
                         x: Math.random() * WORLD_SIZE,
@@ -433,7 +507,6 @@ function Game() {
             } else {
                 // Only pop tail if no food eaten (normal movement)
                 // Handle boosting (lose length)
-                // Match boost consumption rate to be slower (every 10th frame)
                 if (player.boosting && player.segments.length > 5) {
                     player.boostTick++
                     if (player.boostTick % 10 === 0) {
@@ -451,16 +524,16 @@ function Game() {
             // Update camera
             gameStateRef.current.camera.x = newHead.x - window.innerWidth / 2
             gameStateRef.current.camera.y = newHead.y - window.innerHeight / 2
-
-            // Send position to server
-            if (socketRef.current) {
-                socketRef.current.emit('move', {
-                    segments: player.segments, // Send full segments for sync
-                    direction: player.direction
-                })
-            }
         }
-    }
+
+        // PREDICT OTHER PLAYERS' MOVEMENT (client-side prediction)
+        gameStateRef.current.players.forEach((otherPlayer, id) => {
+            if (otherPlayer.alive !== false && otherPlayer.segments && otherPlayer.segments.length > 0) {
+                // Predict their next position based on their last known direction
+                predictMovement(otherPlayer, clampedDelta)
+            }
+        })
+    }, [gameStatus, predictMovement])
 
     // Render game
     const render = (ctx) => {

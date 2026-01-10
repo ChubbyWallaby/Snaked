@@ -4,7 +4,9 @@ const FOOD_COUNT = 300
 const FOOD_RADIUS = 8
 const SEGMENT_RADIUS = 12
 const INITIAL_SNAKE_LENGTH = 10
-const MAX_SPEED = 15 // Normal is ~5, boost is ~10. Allow buffer.
+const NORMAL_SPEED = 2.5
+const BOOST_SPEED_MULTIPLIER = 2
+const TICK_RATE = 60 // Server calculates movement at 60Hz
 
 // Game colors
 const SNAKE_COLORS = [
@@ -113,6 +115,9 @@ export class GameRoom {
             username,
             segments,
             direction: { x: 1, y: 0 },
+            speed: NORMAL_SPEED,
+            boosting: false,
+            boostTick: 0,
             color: SNAKE_COLORS[colorIndex],
             colorIndex,
             points: 0, // Store as points (integer)
@@ -157,47 +162,26 @@ export class GameRoom {
         const player = this.players.get(socketId)
         if (!player || !player.alive) return
 
-        const now = Date.now()
-        // Simple speed validation
-        // We trust the client's segments (for now, to keep movement smooth on their end)
-        // BUT we check if the head moved too far since last update
-
-        if (data.segments && data.segments.length > 0) {
-            // Note: Speed validation was causing issues because client spawn position
-            // can differ from server spawn position, causing first move to be rejected.
-            // For a production game, we'd need to:
-            // 1. Make client use server-provided spawn position exactly
-            // 2. Or implement server-authoritative movement
-            // For now, trust client segments to keep game playable.
-
-            player.segments = data.segments
-            player.lastMoveTime = Date.now()
-        }
-
-        // Update direction
+        // Update direction if changed
         if (data.direction) {
-            player.direction = data.direction
+            // Normalize direction vector
+            const len = Math.sqrt(data.direction.x ** 2 + data.direction.y ** 2)
+            if (len > 0) {
+                player.direction = {
+                    x: data.direction.x / len,
+                    y: data.direction.y / len
+                }
+            }
         }
 
-        // Check Collisions and Collection
-        this.checkFoodCollection(player)
-        this.checkMoneyCollection(socketId, player)
-
-        const killerId = this.checkSnakeCollision(player)
-        if (killerId) {
-            this.handlePlayerDeath(player, killerId)
-        } else {
-            // Broadcast move
-            // Optimization: Don't rebroadcast every single move immediately.
-            // The gameloop will pick up the new state. 
-            // However, for smooth opponent movement, we might want to emit key events.
-            // But relying on the tick loop is more bandwidth efficient.
-            // The original code emitted 'playerMoved' here. Let's keep it but maybe throttle?
-            // Actually, let's REMOVE immediate broadcast and rely on the Game Loop tick (10Hz)
-            // This massively reduces bandwidth.
-
-            // this.io.to(this.roomId).emit('playerMoved', ...)
+        // Update boosting state
+        if (data.boosting !== undefined) {
+            player.boosting = data.boosting
+            player.speed = data.boosting ? NORMAL_SPEED * BOOST_SPEED_MULTIPLIER : NORMAL_SPEED
         }
+
+        player.lastMoveTime = Date.now()
+        // Note: Movement calculation now happens in game loop, not here
     }
 
     handlePlayerDeath(player, killerId, disconnected = false) {
@@ -229,6 +213,35 @@ export class GameRoom {
         // Immediately remove dead player to prevent ghost snakes
         // The client handles death animation locally
         this.players.delete(player.id)
+    }
+
+    // Calculate next position based on current state (server-authoritative)
+    calculateMovement(player, deltaTime = 1) {
+        if (!player.alive || player.segments.length === 0) return
+
+        const head = player.segments[0]
+        const newHead = {
+            x: head.x + player.direction.x * player.speed * deltaTime,
+            y: head.y + player.direction.y * player.speed * deltaTime
+        }
+
+        // Boundary checking
+        newHead.x = Math.max(SEGMENT_RADIUS, Math.min(WORLD_SIZE - SEGMENT_RADIUS, newHead.x))
+        newHead.y = Math.max(SEGMENT_RADIUS, Math.min(WORLD_SIZE - SEGMENT_RADIUS, newHead.y))
+
+        // Move segments
+        player.segments.unshift(newHead)
+
+        // Handle tail (normal movement or boost consumption)
+        if (player.boosting && player.segments.length > 5) {
+            player.boostTick++
+            if (player.boostTick % 10 === 0) {
+                player.segments.pop() // Extra pop for boost cost
+            }
+            player.segments.pop() // Normal movement pop
+        } else {
+            player.segments.pop() // Normal movement pop
+        }
     }
 
     pointInCircle(px, py, cx, cy, radius) {
@@ -270,22 +283,30 @@ export class GameRoom {
         if (!player.alive || player.segments.length === 0) return
 
         const head = player.segments[0]
-        const collected = []
+        let foodEaten = 0
 
         this.food = this.food.filter(f => {
             if (this.pointInCircle(head.x, head.y, f.x, f.y, SEGMENT_RADIUS + FOOD_RADIUS)) {
-                collected.push(f)
+                foodEaten++
                 return false
             }
             return true
         })
 
-        if (this.food.length < FOOD_COUNT) {
+        // Grow snake for each food eaten (5 segments per food)
+        if (foodEaten > 0) {
+            const segmentsToAdd = foodEaten * 5
+            for (let i = 0; i < segmentsToAdd; i++) {
+                const tail = player.segments[player.segments.length - 1]
+                player.segments.push({ x: tail.x, y: tail.y })
+            }
             this.foodChanged = true
         }
 
-        // Respawn food
-        collected.forEach(() => this.spawnFood())
+        // Respawn food that was eaten
+        for (let i = 0; i < foodEaten; i++) {
+            this.spawnFood()
+        }
     }
 
     checkMoneyCollection(socketId, player) {
@@ -294,18 +315,39 @@ export class GameRoom {
         const head = player.segments[0]
 
         this.moneyOrbs = this.moneyOrbs.filter(orb => {
+            // Safety check for value
+            const val = Math.max(1, orb.value || 1)
+
             // Adjust radius for larger values (logarithmic scaling)
-            const orbRadius = 10 + Math.log10(Math.max(1, orb.value)) * 2
-            if (this.pointInCircle(head.x, head.y, orb.x, orb.y, SEGMENT_RADIUS + orbRadius)) {
-                player.points += orb.value
+            // Match client logic: 10 + log10(val) * 4
+            const orbRadius = 10 + Math.log10(val) * 4
+
+            const collisionRadius = SEGMENT_RADIUS + orbRadius
+
+            // Debugging: Check for near misses (within 50 units)
+            // Only log randomly to avoid flood, or if it's very close
+            const dx = head.x - orb.x
+            const dy = head.y - orb.y
+            const distSq = dx * dx + dy * dy
+
+            if (distSq <= collisionRadius * collisionRadius) {
+                // Collision!
+                console.log(`[Collision] Player ${player.username} collected orb ${orb.id} (Val=${val}, R=${orbRadius.toFixed(1)})`)
+                player.points += val
                 this.io.to(this.roomId).emit('moneyCollected', {
                     playerId: socketId,
                     orbId: orb.id,
-                    amount: orb.value
+                    amount: val
                 })
-                return false
+                return false // Remove from array
             }
-            return true
+
+            // Debug near miss
+            if (distSq < (collisionRadius + 20) ** 2) {
+                // console.log(`[Near Miss] Player ${player.username} near orb ${orb.id}. Dist: ${Math.sqrt(distSq).toFixed(1)} vs Rad: ${collisionRadius.toFixed(1)}`)
+            }
+
+            return true // Keep in array
         })
     }
 
@@ -368,28 +410,46 @@ export class GameRoom {
     startGameLoop() {
         this.active = true
         this.foodChanged = true // Ensure first tick sends food
+        let lastUpdateTime = Date.now()
+
         this.intervalId = setInterval(() => {
             if (!this.active) return
 
+            const now = Date.now()
+            const deltaTime = (now - lastUpdateTime) / 16.67 // Normalize to 60fps
+            lastUpdateTime = now
+
+            // Calculate movement for all players (server-authoritative)
+            for (const [id, player] of this.players) {
+                if (player.alive) {
+                    this.calculateMovement(player, deltaTime)
+
+                    // Check collisions and collections after movement
+                    this.checkFoodCollection(player)
+                    this.checkMoneyCollection(id, player)
+
+                    const killerId = this.checkSnakeCollision(player)
+                    if (killerId) {
+                        this.handlePlayerDeath(player, killerId)
+                    }
+                }
+            }
+
+            // Build optimized game state for broadcast
             const playersObject = {}
             for (const [id, player] of this.players) {
                 if (player.alive) {
                     playersObject[id] = {
                         id: player.id,
                         username: player.username,
-                        segments: player.segments, // Could limit this further if needed
+                        segments: player.segments,
+                        direction: player.direction,
                         color: player.color,
                         alive: player.alive,
-                        points: player.points // Send raw points
+                        points: player.points
                     }
                 }
             }
-
-            // Debug logs disabled for performance
-            // const playerCount = Object.keys(playersObject).length
-            // if (playerCount > 0) {
-            //     console.log(`[Room ${this.roomId.slice(0, 8)}] Broadcasting ${playerCount} players, ${this.food.length} food, leaderboard: ${this.getLeaderboard().length}`)
-            // }
 
             const update = {
                 players: playersObject,
@@ -405,7 +465,7 @@ export class GameRoom {
             }
 
             this.io.to(this.roomId).emit('gameState', update)
-        }, 15) // ~66Hz update rate
+        }, 16.67) // ~60Hz update rate
     }
 
     stop() {
