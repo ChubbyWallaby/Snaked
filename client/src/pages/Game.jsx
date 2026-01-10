@@ -449,17 +449,9 @@ function Game() {
         // Cap delta to prevent teleporting on lag spikes
         const clampedDelta = Math.min(deltaTime, 3)
 
-        // Smooth direction turning
-        const turnSpeed = 0.1
-        player.direction.x += (player.targetDirection.x - player.direction.x) * turnSpeed
-        player.direction.y += (player.targetDirection.y - player.direction.y) * turnSpeed
-
-        // Normalize direction
-        const len = Math.sqrt(player.direction.x ** 2 + player.direction.y ** 2)
-        if (len > 0) {
-            player.direction.x /= len
-            player.direction.y /= len
-        }
+        // Direct mouse following - instant response, no interpolation
+        player.direction.x = player.targetDirection.x
+        player.direction.y = player.targetDirection.y
 
         // Check if direction or boosting changed significantly
         const directionChanged = Math.abs(player.direction.x - lastSentState.current.direction.x) > 0.01 ||
