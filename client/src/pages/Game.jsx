@@ -176,7 +176,7 @@ function Game() {
 
                             // Smooth reconciliation: Only adjust head position, don't replace segments
                             // This preserves the smooth curves of the snake body
-                            if (distSq > 100) { // Only reconcile if off by more than 10px
+                            if (distSq > 2500) { // Only reconcile if off by more than 50px
                                 // Gentle interpolation (20% toward server position)
                                 const alpha = 0.2
                                 playerRef.current.segments[0] = {
