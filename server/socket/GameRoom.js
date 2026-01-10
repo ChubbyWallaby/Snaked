@@ -121,6 +121,7 @@ export class GameRoom {
             color: SNAKE_COLORS[colorIndex],
             colorIndex,
             points: 0, // Store as points (integer)
+            thickness: SEGMENT_RADIUS, // Start at base thickness
             alive: true,
             joinedAt: Date.now(),
             lastMoveTime: Date.now()
@@ -253,24 +254,28 @@ export class GameRoom {
     checkSnakeCollision(player) {
         if (!player.alive || player.segments.length === 0) return null
         const head = player.segments[0]
+        const playerThickness = player.thickness || SEGMENT_RADIUS
 
         for (const [otherId, other] of this.players) {
             if (otherId === player.id || !other.alive) continue
 
-            // Body collision
+            const otherThickness = other.thickness || SEGMENT_RADIUS
+
+            // Body collision - use actual thickness of both snakes
             for (let i = 1; i < other.segments.length; i++) {
                 const segment = other.segments[i]
-                // Strict hitbox: match visual radius (12px)
-                if (this.pointInCircle(head.x, head.y, segment.x, segment.y, SEGMENT_RADIUS)) {
+                // Collision radius is sum of both thicknesses
+                const collisionRadius = (playerThickness + otherThickness) / 2
+                if (this.pointInCircle(head.x, head.y, segment.x, segment.y, collisionRadius)) {
                     return otherId // Killed by otherId
                 }
             }
 
             // Head collision (Head-to-Head)
             // Use tighter radius for head-to-head (0.9) to favor "cutting off" maneuvers.
-            // If hitboxes are too big, a flanker might "hit the head" instead of passing it.
             const otherHead = other.segments[0]
-            if (this.pointInCircle(head.x, head.y, otherHead.x, otherHead.y, SEGMENT_RADIUS * 0.9)) {
+            const headCollisionRadius = ((playerThickness + otherThickness) / 2) * 0.9
+            if (this.pointInCircle(head.x, head.y, otherHead.x, otherHead.y, headCollisionRadius)) {
                 if (player.segments.length <= other.segments.length) {
                     return otherId // Killed by otherId
                 }
@@ -300,6 +305,8 @@ export class GameRoom {
                 const tail = player.segments[player.segments.length - 1]
                 player.segments.push({ x: tail.x, y: tail.y })
             }
+            // Update thickness based on new length (slow growth with square root)
+            player.thickness = SEGMENT_RADIUS + Math.sqrt(player.segments.length) * 0.4
             this.foodChanged = true
         }
 
@@ -446,7 +453,8 @@ export class GameRoom {
                         direction: player.direction,
                         color: player.color,
                         alive: player.alive,
-                        points: player.points
+                        points: player.points,
+                        thickness: player.thickness
                     }
                 }
             }

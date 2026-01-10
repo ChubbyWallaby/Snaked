@@ -75,6 +75,14 @@ function Game() {
     // Mouse position
     const mouseRef = useRef({ x: 0, y: 0 })
 
+    // Calculate snake thickness based on length (slow growth)
+    const calculateThickness = useCallback((length) => {
+        // Base radius is 12, grows slowly with square root
+        // At length 10: 12px, at length 50: ~14.4px, at length 100: ~15.6px, at length 200: ~17.2px
+        const growthFactor = 0.4
+        return SEGMENT_RADIUS + Math.sqrt(length) * growthFactor
+    }, [])
+
     // Initialize game - Watch ad then join
     const startGame = async () => {
         try {
@@ -176,7 +184,7 @@ function Game() {
 
                             // Smooth reconciliation: Only adjust head position, don't replace segments
                             // This preserves the smooth curves of the snake body
-                            if (distSq > 2500) { // Only reconcile if off by more than 50px
+                            if (distSq > 22500) { // Only reconcile if off by more than 150px
                                 // Gentle interpolation (20% toward server position)
                                 const alpha = 0.2
                                 playerRef.current.segments[0] = {
@@ -531,9 +539,15 @@ function Game() {
             // Update length display
             setSnakeLength(player.segments.length)
 
-            // Update camera
-            gameStateRef.current.camera.x = newHead.x - window.innerWidth / 2
-            gameStateRef.current.camera.y = newHead.y - window.innerHeight / 2
+            // Update camera with zoom based on thickness
+            const thickness = calculateThickness(player.segments.length)
+            const zoomFactor = 1 + (thickness - SEGMENT_RADIUS) / 150 // Slow zoom out as snake grows
+            const viewWidth = window.innerWidth * zoomFactor
+            const viewHeight = window.innerHeight * zoomFactor
+
+            gameStateRef.current.camera.x = newHead.x - viewWidth / 2
+            gameStateRef.current.camera.y = newHead.y - viewHeight / 2
+            gameStateRef.current.camera.zoom = zoomFactor
         }
 
         // PREDICT OTHER PLAYERS' MOVEMENT (client-side prediction)
@@ -640,8 +654,12 @@ function Game() {
 
                 if (screenX > -50 && screenX < canvas.width + 50 &&
                     screenY > -50 && screenY < canvas.height + 50) {
+                    // Use thickness-based rendering with minimal taper
+                    const baseThickness = otherPlayer.thickness || calculateThickness(otherPlayer.segments.length)
+                    const segmentRadius = Math.max(3, baseThickness - i * 0.02) // Very gentle taper
+
                     ctx.beginPath()
-                    ctx.arc(screenX, screenY, Math.max(3, SEGMENT_RADIUS - i * 0.1), 0, Math.PI * 2)
+                    ctx.arc(screenX, screenY, segmentRadius, 0, Math.PI * 2)
                     ctx.fillStyle = otherPlayer.color || '#ff00aa'
                     ctx.fill()
 
@@ -669,15 +687,20 @@ function Game() {
 
         // Draw player snake
         const player = playerRef.current
+        const playerThickness = calculateThickness(player.segments.length)
+
         player.segments.forEach((segment, i) => {
             const screenX = segment.x - camera.x
             const screenY = segment.y - camera.y
 
+            // Use thickness-based rendering with minimal taper
+            const segmentRadius = Math.max(3, playerThickness - i * 0.02) // Very gentle taper
+
             ctx.beginPath()
-            ctx.arc(screenX, screenY, Math.max(3, SEGMENT_RADIUS - i * 0.05), 0, Math.PI * 2)
+            ctx.arc(screenX, screenY, segmentRadius, 0, Math.PI * 2)
 
             // Gradient for player
-            const gradient = ctx.createRadialGradient(screenX, screenY, 0, screenX, screenY, SEGMENT_RADIUS)
+            const gradient = ctx.createRadialGradient(screenX, screenY, 0, screenX, screenY, playerThickness)
             gradient.addColorStop(0, player.color)
             gradient.addColorStop(1, player.color + '80')
             ctx.fillStyle = i === 0 ? player.color : gradient
