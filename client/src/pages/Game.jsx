@@ -174,15 +174,33 @@ function Game() {
                             const dy = serverHead.y - clientHead.y
                             const distSq = dx * dx + dy * dy
 
-                            // If server and client diverge by more than 15px, reconcile
-                            if (distSq > 225) { // 15^2 = 225
-                                console.log(`Reconciling position. Diff: ${Math.sqrt(distSq).toFixed(1)}px`)
-                                // Smoothly interpolate toward server position
-                                playerRef.current.segments = serverPlayer.segments
+                            // Smooth reconciliation: Only adjust head position, don't replace segments
+                            // This preserves the smooth curves of the snake body
+                            if (distSq > 100) { // Only reconcile if off by more than 10px
+                                // Gentle interpolation (20% toward server position)
+                                const alpha = 0.2
+                                playerRef.current.segments[0] = {
+                                    x: clientHead.x + dx * alpha,
+                                    y: clientHead.y + dy * alpha
+                                }
+
+                                if (distSq > 400) { // Log only significant corrections (>20px)
+                                    console.log(`Reconciling position. Diff: ${Math.sqrt(distSq).toFixed(1)}px`)
+                                }
                             }
-                            // Update length from server (authoritative for food collection)
-                            if (serverPlayer.segments.length !== playerRef.current.segments.length) {
-                                playerRef.current.segments = serverPlayer.segments
+
+                            // Update length from server only if it changed (food collection is authoritative)
+                            const lengthDiff = serverPlayer.segments.length - playerRef.current.segments.length
+                            if (lengthDiff > 0) {
+                                // Server says we grew - add segments at the tail
+                                for (let i = 0; i < lengthDiff; i++) {
+                                    const tail = playerRef.current.segments[playerRef.current.segments.length - 1]
+                                    playerRef.current.segments.push({ x: tail.x, y: tail.y })
+                                }
+                                setSnakeLength(serverPlayer.segments.length)
+                            } else if (lengthDiff < 0) {
+                                // Server says we shrunk - remove segments from tail
+                                playerRef.current.segments.splice(serverPlayer.segments.length)
                                 setSnakeLength(serverPlayer.segments.length)
                             }
                         }
