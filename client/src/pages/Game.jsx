@@ -185,7 +185,7 @@ function Game() {
 
                             // Smooth reconciliation: Only adjust head position, don't replace segments
                             // This preserves the smooth curves of the snake body
-                            if (distSq > 10000) { // Reconcile if off by more than 100px (relaxed for smoothness)
+                            if (distSq > 50625) { // Reconcile if off by more than 100px (relaxed for smoothness)
                                 // Gentle interpolation (20% toward server position)
                                 const alpha = 0.2
                                 playerRef.current.segments[0] = {
@@ -450,6 +450,9 @@ function Game() {
 
     // Update game state (deltaTime normalized to 60fps: 1.0 = 60fps, 2.0 = 30fps)
     const update = useCallback((deltaTime = 1) => {
+        const canvas = canvasRef.current
+        if (!canvas) return
+
         const player = playerRef.current
         if (!player.alive || gameStatus !== 'playing') return
 
