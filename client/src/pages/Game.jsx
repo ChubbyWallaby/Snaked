@@ -543,13 +543,24 @@ function Game() {
 
             // Update camera with zoom based on thickness
             const thickness = calculateThickness(player.segments.length)
-            const zoomFactor = 1 + (thickness - SEGMENT_RADIUS) / 150 // Slow zoom out as snake grows
-            const viewWidth = window.innerWidth * zoomFactor
-            const viewHeight = window.innerHeight * zoomFactor
+            const growthZoom = 1 + (thickness - SEGMENT_RADIUS) / 150 // Slow zoom out as snake grows
+
+            // FIXED VERTICAL FOV: Always show ~1080 world units vertically (scaled by growth)
+            // This prevents browser zoom exploits (zooming out won't reveal more map)
+            const BASE_VIEW_HEIGHT = 1080
+            const targetViewHeight = BASE_VIEW_HEIGHT * growthZoom
+
+            // Calculate scale to fit the world view into the actual canvas pixels
+            // If window is huge (zoomed out), scale goes up. If small, scale goes down.
+            const scale = canvas.height / targetViewHeight
+
+            const viewWidth = canvas.width / scale
+            const viewHeight = targetViewHeight
 
             gameStateRef.current.camera.x = newHead.x - viewWidth / 2
             gameStateRef.current.camera.y = newHead.y - viewHeight / 2
-            gameStateRef.current.camera.zoom = zoomFactor
+            gameStateRef.current.camera.zoom = growthZoom // Keep for logic if needed
+            gameStateRef.current.camera.scale = scale
         }
 
         // PREDICT OTHER PLAYERS' MOVEMENT (client-side prediction)
@@ -593,10 +604,14 @@ function Game() {
     const render = (ctx) => {
         const canvas = canvasRef.current
         const camera = gameStateRef.current.camera
+        const scale = camera.scale || 1
 
         // Clear canvas
         ctx.fillStyle = '#0a0a0f'
         ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+        ctx.save()
+        ctx.scale(scale, scale)
 
         // Draw grid
         ctx.strokeStyle = 'rgba(0, 255, 136, 0.05)'
@@ -605,17 +620,22 @@ function Game() {
         const offsetX = -camera.x % gridSize
         const offsetY = -camera.y % gridSize
 
-        for (let x = offsetX; x < canvas.width; x += gridSize) {
+        // Adjust loop bounds for scaled view
+        // We need to cover viewWidth/viewHeight, which is canvas.width/scale
+        const renderWidth = canvas.width / scale
+        const renderHeight = canvas.height / scale
+
+        for (let x = offsetX; x < renderWidth; x += gridSize) {
             ctx.beginPath()
             ctx.moveTo(x, 0)
-            ctx.lineTo(x, canvas.height)
+            ctx.lineTo(x, renderHeight)
             ctx.stroke()
         }
 
-        for (let y = offsetY; y < canvas.height; y += gridSize) {
+        for (let y = offsetY; y < renderHeight; y += gridSize) {
             ctx.beginPath()
             ctx.moveTo(0, y)
-            ctx.lineTo(canvas.width, y)
+            ctx.lineTo(renderWidth, y)
             ctx.stroke()
         }
 
@@ -781,6 +801,8 @@ function Game() {
             ctx.fillStyle = player.color + '40'
             ctx.fill()
         }
+
+        ctx.restore()
     }
 
     // Format time
