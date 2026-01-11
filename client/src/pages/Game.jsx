@@ -185,7 +185,7 @@ function Game() {
 
                             // Smooth reconciliation: Only adjust head position, don't replace segments
                             // This preserves the smooth curves of the snake body
-                            if (distSq > 400) { // Reconcile if off by more than 20px
+                            if (distSq > 10000) { // Reconcile if off by more than 100px (relaxed for smoothness)
                                 // Gentle interpolation (20% toward server position)
                                 const alpha = 0.2
                                 playerRef.current.segments[0] = {
@@ -557,6 +557,34 @@ function Game() {
             if (otherPlayer.alive !== false && otherPlayer.segments && otherPlayer.segments.length > 0) {
                 // Predict their next position based on their last known direction
                 predictMovement(otherPlayer, clampedDelta)
+            }
+        })
+
+        // CLIENT-SIDE COLLISION DETECTION
+        // If we hit another snake locally, we die immediately (don't wait for server)
+        const head = player.segments[0]
+        const playerThickness = calculateThickness(player.segments.length)
+
+        gameStateRef.current.players.forEach((otherPlayer, id) => {
+            if (id === playerRef.current.id) return
+            if (otherPlayer.alive === false) return
+
+            const otherThickness = otherPlayer.thickness || calculateThickness(otherPlayer.segments?.length || 10)
+
+            // Check collision with other snake's segments
+            if (otherPlayer.segments) {
+                otherPlayer.segments.forEach((segment) => {
+                    // Collision radius is sum of both thicknesses
+                    const collisionRadius = (playerThickness + otherThickness) / 2
+                    if (pointInCircle(head.x, head.y, segment.x, segment.y, collisionRadius)) {
+                        // We hit them!
+                        console.log('Client-side death detected!')
+                        handleDeath({ playerId: playerRef.current.id }) // Visual death
+                        if (socketRef.current) {
+                            socketRef.current.emit('die', { killerId: id }) // Tell server
+                        }
+                    }
+                })
             }
         })
     }, [gameStatus, predictMovement])

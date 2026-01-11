@@ -228,6 +228,14 @@ export class GameRoom {
         this.spawnFood()
     }
 
+    handleClientDeath(socketId, killerId) {
+        const player = this.players.get(socketId)
+        if (!player || !player.alive) return
+
+        console.log(`Player ${player.username} admitted death (Client-Side). Killer: ${killerId || 'Environment'}`)
+        this.handlePlayerDeath(player, killerId)
+    }
+
     handlePlayerDeath(player, killerId, disconnected = false) {
         player.alive = false
 

@@ -43,6 +43,17 @@ export class LobbyManager {
                 }
             }
         })
+
+        socket.on('die', (data) => {
+            const roomId = this.socketRoomMap.get(socket.id)
+            if (roomId) {
+                const room = this.activeGames.get(roomId)
+                if (room) {
+                    // Pass the Killer ID if provided by client
+                    room.handleClientDeath(socket.id, data?.killerId)
+                }
+            }
+        })
     }
 
     handleDisconnect(socketId) {
