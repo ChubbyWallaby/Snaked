@@ -6,7 +6,7 @@ const SEGMENT_RADIUS = 12
 const INITIAL_SNAKE_LENGTH = 10
 const NORMAL_SPEED = 2.5
 const BOOST_SPEED_MULTIPLIER = 2
-const TICK_RATE = 60 // Server calculates movement at 60Hz
+const TICK_RATE = 30 // Server calculates movement at 30Hz
 
 // Game colors
 const SNAKE_COLORS = [
@@ -473,7 +473,7 @@ export class GameRoom {
             }
 
             this.io.to(this.roomId).emit('gameState', update)
-        }, 16.67) // ~60Hz update rate
+        }, 33) // ~30Hz update rate
     }
 
     stop() {

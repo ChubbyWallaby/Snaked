@@ -185,7 +185,7 @@ function Game() {
 
                             // Smooth reconciliation: Only adjust head position, don't replace segments
                             // This preserves the smooth curves of the snake body
-                            if (distSq > 22500) { // Only reconcile if off by more than 150px
+                            if (distSq > 400) { // Reconcile if off by more than 20px
                                 // Gentle interpolation (20% toward server position)
                                 const alpha = 0.2
                                 playerRef.current.segments[0] = {
@@ -193,9 +193,7 @@ function Game() {
                                     y: clientHead.y + dy * alpha
                                 }
 
-                                if (distSq > 400) { // Log only significant corrections (>20px)
-                                    console.log(`Reconciling position. Diff: ${Math.sqrt(distSq).toFixed(1)}px`)
-                                }
+                                console.log(`Reconciling position. Diff: ${Math.sqrt(distSq).toFixed(1)}px`)
                             }
 
                             // Update length from server only if it changed (food collection is authoritative)
