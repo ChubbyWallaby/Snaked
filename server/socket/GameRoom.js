@@ -185,6 +185,49 @@ export class GameRoom {
         // Note: Movement calculation now happens in game loop, not here
     }
 
+    handleEatFood(socketId, foodId) {
+        const player = this.players.get(socketId)
+        if (!player || !player.alive) return
+
+        const foodIndex = this.food.findIndex(f => f.id === foodId)
+        if (foodIndex === -1) return // Already eaten
+
+        const food = this.food[foodIndex]
+        const head = player.segments[0]
+
+        // Latency Tolerance Check
+        // Allow a larger radius (Radius + FoodRadius + Tolerance)
+        // Tolerance of 50 units covers ~200ms of lag at normal speed
+        const TOLERANCE = 50
+        const distSq = (head.x - food.x) ** 2 + (head.y - food.y) ** 2
+        const validDist = SEGMENT_RADIUS + FOOD_RADIUS + TOLERANCE
+
+        if (distSq <= validDist * validDist) {
+            this.consumeFood(player, foodIndex)
+        }
+    }
+
+    consumeFood(player, foodIndex) {
+        // Remove food
+        this.food.splice(foodIndex, 1)
+
+        // Grow snake
+        const segmentsToAdd = 5
+        for (let i = 0; i < segmentsToAdd; i++) {
+            const tail = player.segments[player.segments.length - 1]
+            player.segments.push({ x: tail.x, y: tail.y })
+        }
+
+        // Update thickness
+        player.thickness = SEGMENT_RADIUS + Math.sqrt(player.segments.length) * 0.4
+
+        // Mark update needed
+        this.foodChanged = true
+
+        // Respawn
+        this.spawnFood()
+    }
+
     handlePlayerDeath(player, killerId, disconnected = false) {
         player.alive = false
 
@@ -288,31 +331,14 @@ export class GameRoom {
         if (!player.alive || player.segments.length === 0) return
 
         const head = player.segments[0]
-        let foodEaten = 0
 
-        this.food = this.food.filter(f => {
+        // Check strict collision for server-side authority
+        // We iterate backwards to allow splicing
+        for (let i = this.food.length - 1; i >= 0; i--) {
+            const f = this.food[i]
             if (this.pointInCircle(head.x, head.y, f.x, f.y, SEGMENT_RADIUS + FOOD_RADIUS)) {
-                foodEaten++
-                return false
+                this.consumeFood(player, i)
             }
-            return true
-        })
-
-        // Grow snake for each food eaten (5 segments per food)
-        if (foodEaten > 0) {
-            const segmentsToAdd = foodEaten * 5
-            for (let i = 0; i < segmentsToAdd; i++) {
-                const tail = player.segments[player.segments.length - 1]
-                player.segments.push({ x: tail.x, y: tail.y })
-            }
-            // Update thickness based on new length (slow growth with square root)
-            player.thickness = SEGMENT_RADIUS + Math.sqrt(player.segments.length) * 0.4
-            this.foodChanged = true
-        }
-
-        // Respawn food that was eaten
-        for (let i = 0; i < foodEaten; i++) {
-            this.spawnFood()
         }
     }
 

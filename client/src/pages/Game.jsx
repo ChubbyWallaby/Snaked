@@ -497,6 +497,9 @@ function Game() {
             gameStateRef.current.food = gameStateRef.current.food.filter(food => {
                 if (pointInCircle(newHead.x, newHead.y, food.x, food.y, SEGMENT_RADIUS + FOOD_RADIUS)) {
                     foodEaten++
+                    if (food.id && socketRef.current) {
+                        socketRef.current.emit('eatFood', food.id)
+                    }
                     return false // Remove eaten food
                 }
                 return true

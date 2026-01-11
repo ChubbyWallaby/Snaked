@@ -33,6 +33,16 @@ export class LobbyManager {
                 }
             }
         })
+
+        socket.on('eatFood', (foodId) => {
+            const roomId = this.socketRoomMap.get(socket.id)
+            if (roomId) {
+                const room = this.activeGames.get(roomId)
+                if (room) {
+                    room.handleEatFood(socket.id, foodId)
+                }
+            }
+        })
     }
 
     handleDisconnect(socketId) {
