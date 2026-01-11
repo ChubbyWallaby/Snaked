@@ -10,6 +10,7 @@ import { Server } from 'socket.io'
 import authRoutes from './routes/auth.js'
 import gameRoutes from './routes/game.js'
 import adminRoutes from './routes/admin.js'
+import statsRoutes from './routes/stats.js'
 import { setupGameSocket } from './socket/gameHandler.js'
 import { initDatabase } from './db/index.js'
 
@@ -58,6 +59,7 @@ app.set('trust proxy', true)
 app.use('/api/auth', authRoutes)
 app.use('/api/game', gameRoutes)
 app.use('/api/admin', adminRoutes)
+app.use('/api/stats', statsRoutes)
 
 // Health check
 app.get('/api/health', (req, res) => {

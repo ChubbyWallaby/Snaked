@@ -40,6 +40,7 @@ function Game() {
     const [error, setError] = useState('')
     const [snakeLength, setSnakeLength] = useState(INITIAL_SNAKE_LENGTH)
     const [adProgress, setAdProgress] = useState(0)
+    const [prizePool, setPrizePool] = useState(0)
 
     // Refs for game loop (to avoid closure staleness)
     const collectedMoneyRef = useRef(0)
@@ -807,6 +808,28 @@ function Game() {
         }
     }, [gameStatus])
 
+    // Fetch prize pool when lobby is shown
+    useEffect(() => {
+        if (gameStatus !== 'lobby') return
+
+        const fetchPrizePool = async () => {
+            try {
+                const response = await axios.get('/api/stats/prize-pool')
+                setPrizePool(response.data.totalPoints || 0)
+            } catch (err) {
+                console.error('Failed to fetch prize pool:', err)
+            }
+        }
+
+        // Fetch immediately
+        fetchPrizePool()
+
+        // Update every 5 seconds
+        const interval = setInterval(fetchPrizePool, 5000)
+
+        return () => clearInterval(interval)
+    }, [gameStatus])
+
     return (
         <div className="game-page">
             {gameStatus === 'lobby' && (
@@ -816,7 +839,7 @@ function Game() {
 
                         <div className="prize-pool-banner">
                             <span className="prize-label">Live Prize Pool</span>
-                            <span className="prize-amount">100,000 Pts</span>
+                            <span className="prize-amount">{prizePool.toLocaleString()} Pts</span>
                         </div>
 
                         <div className="game-info">

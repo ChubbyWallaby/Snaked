@@ -3,7 +3,7 @@ import { LobbyManager } from './LobbyManager.js'
 import { auth as firebaseAuth } from '../firebase.js'
 import { getUser } from '../db/index.js'
 
-let lobbyManager = null
+export let lobbyManager = null
 
 export function setupGameSocket(io) {
     const JWT_SECRET = process.env.JWT_SECRET || 'snaked-super-secret-key-change-in-production'

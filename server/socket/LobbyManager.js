@@ -117,4 +117,27 @@ export class LobbyManager {
 
         console.log(`Player ${user.username} joined room ${roomId.slice(0, 8)} (${room.players.size}/${MAX_PLAYERS})`)
     }
+
+    // --- Stats API ---
+
+    getTotalPoints() {
+        let totalPoints = 0
+
+        // Iterate through all active game rooms
+        for (const [roomId, room] of this.activeGames) {
+            // Sum all player points
+            for (const [playerId, player] of room.players) {
+                if (player.alive) {
+                    totalPoints += player.points || 0
+                }
+            }
+
+            // Sum all money orb values
+            for (const orb of room.moneyOrbs) {
+                totalPoints += orb.value || 0
+            }
+        }
+
+        return totalPoints
+    }
 }
